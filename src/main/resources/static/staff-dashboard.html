@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Staff Dashboard — Glory English Medium High School</title>
+  <link rel="icon" type="image/png"
+    href="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-99hhqvsjdn.jpg">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #1a1a2e;
+      --ink2: #5c5c80;
+      --accent: #2563eb;
+      --gold: #f59e0b;
+      --bg: #f1f0ec;
+      --card: #fff;
+      --border: #e4e2da;
+      --green: #16a34a;
+      --red: #dc2626;
+      --orange: #ea580c;
+      --sidebar-w: 240px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar same as admin */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--ink);
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .sidebar-logo .school-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .sidebar-logo .role-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: #10b981;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .nav {
+      flex: 1;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, .55);
+      font-size: 13px;
+      transition: all .15s;
+      user-select: none;
+    }
+
+    .nav-item .icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, .07);
+      color: rgba(255, 255, 255, .9);
+    }
+
+    .nav-item.active {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .sidebar-footer {
+      padding: 16px 12px;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+    }
+
+    .user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .user-name {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .7);
+    }
+
+    .btn-logout {
+      margin-top: 8px;
+      width: 100%;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, .15);
+      background: transparent;
+      color: rgba(255, 255, 255, .55);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      transition: all .15s;
+    }
+
+    .btn-logout:hover {
+      background: rgba(255, 255, 255, .08);
+      color: rgba(255, 255, 255, .9);
+    }
+
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+    }
+
+    .topbar .filters {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .topbar select,
+    .topbar input {
+      padding: 7px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--ink);
+      background: var(--bg);
+      outline: none;
+    }
+
+    .topbar select:focus,
+    .topbar input:focus {
+      border-color: var(--accent);
+    }
+
+    .content {
+      padding: 28px 32px;
+      flex: 1;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* ---- Cards, tables ---- */
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .table-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .table-header h3 {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: var(--bg);
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--ink2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 12px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #fafaf8;
+    }
+
+    .loading-row td {
+      text-align: center;
+      color: var(--ink2);
+      padding: 32px;
+    }
+
+    /* Buttons */
+    .btn.loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+  position: relative;
+}
+
+.btn.loading::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-top-color: #fff;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 8px;
+  animation: btnSpin 0.7s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes btnSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+    .btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all .15s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-danger {
+      background: #fef2f2;
+      color: var(--red);
+      border: 1px solid #fecaca;
+    }
+
+    .btn-danger:hover {
+      background: #fee2e2;
+    }
+
+    .btn-edit {
+      background: #eff6ff;
+      color: var(--accent);
+      border: 1px solid #bfdbfe;
+    }
+
+    .btn-edit:hover {
+      background: #dbeafe;
+    }
+
+    .btn-success {
+      background: #dcfce7;
+      color: var(--green);
+      border: 1px solid #bbf7d0;
+    }
+
+    .btn-success:hover {
+      background: #bbf7d0;
+    }
+
+    .action-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, .2);
+    }
+
+    .modal-header {
+      padding: 22px 26px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .modal-close {
+      cursor: pointer;
+      font-size: 20px;
+      color: var(--ink2);
+      background: none;
+      border: none;
+    }
+
+    .modal-body {
+      padding: 24px 26px;
+    }
+
+    .modal-footer {
+      padding: 16px 26px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group-m {
+      margin-bottom: 0;
+    }
+
+    .form-group-full {
+      grid-column: 1/-1;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink2);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="datetime-local"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--ink);
+      background: #fafaf8;
+      outline: none;
+      transition: border-color .2s;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      background: #fff;
+    }
+
+    /* Attendance toggles */
+    .att-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      cursor: pointer;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: #fecaca;
+      border-radius: 13px;
+      transition: background .2s;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform .2s;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+    }
+
+    .toggle-switch input:checked+.toggle-track {
+      background: #bbf7d0;
+    }
+
+    .toggle-switch input:checked~.toggle-thumb {
+      transform: translateX(22px);
+    }
+
+    .att-label {
+      font-size: 12px;
+      font-weight: 500;
+      width: 56px;
+    }
+
+    .att-label.present {
+      color: var(--green);
+    }
+
+    .att-label.absent {
+      color: var(--red);
+    }
+
+    /* Marks form grid */
+    .marks-grid-form {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    /* Fee receipt */
+    .receipt-box {
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .receipt-box .receipt-header {
+      text-align: center;
+      border-bottom: 2px dashed var(--border);
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
+
+    .receipt-box .receipt-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--ink);
+    }
+
+    .receipt-box .receipt-title {
+      font-size: 13px;
+      color: var(--ink2);
+      margin-top: 4px;
+    }
+
+    .receipt-box .receipt-no {
+      font-size: 12px;
+      background: #eff6ff;
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--bg);
+    }
+
+    .receipt-row:last-child {
+      border-bottom: none;
+    }
+
+    .receipt-row .key {
+      color: var(--ink2);
+    }
+
+    .receipt-row .val {
+      font-weight: 500;
+    }
+
+    .receipt-total {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .receipt-total .key {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .receipt-total .val {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--green);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .receipt-stamp {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 11px;
+      color: var(--ink2);
+    }
+
+    .stamp-badge {
+      display: inline-block;
+      border: 2px solid var(--green);
+      color: var(--green);
+      padding: 4px 16px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 13px;
+      transform: rotate(-4deg);
+      margin-bottom: 8px;
+    }
+
+    /* Fee status badges */
+    /* .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+    } */
+
+    /* .badge.paid {
+      background: #dcfce7;
+      color: #15803d;
+    } */
+
+    /* .badge.partial {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .badge.pending {
+      background: #fee2e2;
+      color: #b91c1c;
+    } */
+
+    .alert {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .alert.success {
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      color: #15803d;
+      display: block;
+    }
+
+    .alert.error {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img height="50px" width="50px" style="border-radius: 25px;"
+        src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-99hhqvsjdn.jpg">
+
+      <div class="school-name">Glory English Medium High School</div>
+      <span class="role-badge">Staff Portal</span>
+    </div>
+    <nav class="nav">
+      <div class="nav-item active" onclick="switchSection('students', this)"><span class="icon">👥</span> Students</div>
+      <div class="nav-item" onclick="switchSection('marks', this)"><span class="icon">📝</span> Enter Marks</div>
+      <div class="nav-item" onclick="switchSection('attendance', this)"><span class="icon">📅</span> Attendance</div>
+      <div class="nav-item" onclick="switchSection('quizzes', this)"><span class="icon">🧪</span> Quizzes</div>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-row">
+        <div class="user-avatar" id="avatar-letter">S</div>
+        <div class="user-name" id="user-name-display">Loading...</div>
+      </div>
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <h1 id="section-title">Students</h1>
+      <div class="filters">
+        <select id="class-select" onchange="loadCurrentSection()">
+          <option value="">Select Class</option>
+        </select>
+        <input type="text" id="year-input" value="2024-2025" placeholder="Academic Year" style="width:120px" />
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- =================== STUDENTS =================== -->
+      <div class="section active" id="section-students">
+        <div class="table-wrap">
+          <div class="table-header">
+            <h3>Student List</h3>
+            <button class="btn btn-primary" onclick="openStudentModal(null)">+ Add Student</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Roll No.</th>
+                <th>Name</th>
+                <th>Guardian</th>
+                <th>Phone</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="students-tbody">
+              <tr class="loading-row">
+                <td colspan="5">Select a class to view students</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- =================== MARKS =================== -->
+      <div class="section" id="section-marks">
+        <div class="table-wrap">
+          <div class="table-header">
+            <h3>Enter / Update Marks</h3>
+            <div style="display:flex;gap:10px;">
+              <select id="marks-exam-type" onchange="loadCurrentSection()"
+                style="padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;">
+                <option value="FA1">FA1</option>
+                <option value="FA2">FA2</option>
+                <option value="FA3">FA3</option>
+                <option value="SA1">SA1</option>
+                <option value="FA4">FA4</option>
+                <option value="SA2">SA2</option>
+              </select>
+            </div>
+          </div>
+          <div id="marks-alert" class="alert"></div>
+          <table>
+            <thead id="marks-thead"></thead>
+            <tbody id="marks-tbody">
+              <tr class="loading-row">
+                <td colspan="9">Select a class to enter marks</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="padding:16px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;">
+            <button class="btn btn-primary" onclick="saveAllMarks()">💾 Save All Marks</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================== ATTENDANCE =================== -->
+      <div class="section" id="section-attendance">
+        <div class="table-wrap">
+          <div class="table-header">
+            <h3>Mark Attendance</h3>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <input type="date" id="att-date-staff"
+                style="padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;" />
+              <button class="btn btn-primary" onclick="markAllPresent()">✓ All Present</button>
+            </div>
+          </div>
+          <div id="att-alert" class="alert"></div>
+          <table>
+            <thead>
+              <tr>
+                <th>Roll No.</th>
+                <th>Student Name</th>
+                <th>Attendance</th>
+              </tr>
+            </thead>
+            <tbody id="att-tbody">
+              <tr class="loading-row">
+                <td colspan="3">Select a class to mark attendance</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="padding:16px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;">
+            <button class="btn btn-primary" onclick="saveAttendance()">💾 Save Attendance</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" id="section-quizzes">
+        <div class="table-wrap" style="margin-bottom:20px;">
+          <div class="table-header">
+            <h3 id="quiz-form-mode-title">Create New Quiz</h3>
+            <button class="btn btn-primary" id="new-quiz-btn" onclick="openNewQuizForm()">+ New Quiz</button>
+          </div>
+          <div id="quiz-form-wrap" style="display:none;padding:22px;border-top:1px solid var(--border);">
+            <div class="form-row">
+              <div class="form-group-m"><label>Quiz Title *</label><input type="text" id="qf-title"
+                  placeholder="e.g. Maths Unit Test 1" /></div>
+              <div class="form-group-m"><label>Subject *</label>
+                <select id="qf-subject">
+                  <option value="TELUGU">Telugu</option>
+                  <option value="HINDI">Hindi</option>
+                  <option value="ENGLISH">English</option>
+                  <option value="MATHS">Maths</option>
+                  <option value="SCIENCE">Science</option>
+                  <option value="GK">Gk</option>
+                  <option value="IIT">IIT</option>
+                  <option value="EVS">Evs</option>
+                  <option value="SOCIAL">Social</option>
+                  <option value="BIOLOGY">Biology</option>
+                </select>
+              </div>
+              <div class="form-group-m"><label>Duration (minutes) *</label><input type="number" id="qf-duration"
+                  value="30" min="5" /></div>
+              <div class="form-group-m"><label>Total Marks *</label><input type="number" id="qf-total" value="10"
+                  min="1" /></div>
+              <div class="form-group-m"><label>Passing Marks *</label><input type="number" id="qf-passing" value="4"
+                  min="1" /></div>
+              <div class="form-group-m">
+                <label>Publish Date & Time *</label>
+                <input type="datetime-local" id="qf-scheduledAt" name="scheduledAt" />
+              </div>
+
+              <div class="form-group-m">
+                <label>Close Time</label>
+                <input type="datetime-local" id="qf-expire">
+              </div>
+              <div class="form-group-m"><label>Status</label>
+                <select id="qf-status">
+                  <option value="DRAFT">Draft (hidden)</option>
+                  <option value="PUBLISHED">Published (visible to students)</option>
+                </select>
+              </div>
+              <div class="form-group-m form-group-full"><label>Description</label><input type="text" id="qf-desc"
+                  placeholder="Optional description" /></div>
+            </div>
+            <div style="margin-top:16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <label
+                  style="font-size:13px;font-weight:500;color:var(--ink);text-transform:none;letter-spacing:0;">Questions</label>
+                <button class="btn btn-edit" onclick="addQuestion()">+ Add Question</button>
+              </div>
+              <div id="questions-list"></div>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">
+              <button class="btn" onclick="cancelQuizForm()"
+                style="background:var(--bg);border:1px solid var(--border);">Cancel</button>
+              <button class="btn btn-primary" id="quiz-save-btn" onclick="saveQuiz()">💾 Save Quiz</button>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header">
+            <h3>All Quizzes</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Subject</th>
+                <th>Duration</th>
+                <th>Marks</th>
+                <th>Status</th>
+                <th>Questions</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="quiz-tbody">
+              <tr class="loading-row">
+                <td colspan="7">Select a class to view quizzes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="quiz-results-area" style="margin-top:20px;display:none;">
+          <div class="table-wrap">
+            <div class="table-header">
+              <h3 id="results-quiz-title">Quiz Results</h3>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Roll No.</th>
+                  <th>Name</th>
+                  <th>Score</th>
+                  <th>Correct</th>
+                  <th>Status</th>
+                  <th>Submitted</th>
+                </tr>
+              </thead>
+              <tbody id="results-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+    </div><!-- content -->
+  </div><!-- main -->
+
+  <!-- =================== MODALS =================== -->
+
+  <!-- Student Modal -->
+  <div class="modal-overlay" id="student-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="student-modal-title">Add Student</h3>
+        <button class="modal-close" onclick="closeModal('student-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="sm-id" />
+        <div class="form-row">
+          <div class="form-group-m"><label>Roll Number *</label><input type="text" id="sm-roll"
+              placeholder="e.g. 10A001" /></div>
+          <div class="form-group-m"><label>Full Name *</label><input type="text" id="sm-name"
+              placeholder="Student full name" /></div>
+          <div class="form-group-m"><label>Date of Birth</label><input type="date" id="sm-dob" /></div>
+          <div class="form-group-m"><label>Gender</label>
+            <select id="sm-gender">
+              <option value="">Select</option>
+              <option>MALE</option>
+              <option>FEMALE</option>
+              <option>OTHER</option>
+            </select>
+          </div>
+          <div class="form-group-m"><label>Guardian Name</label><input type="text" id="sm-guardian"
+              placeholder="Parent/Guardian name" /></div>
+          <div class="form-group-m"><label>Contact Phone</label><input type="text" id="sm-phone"
+              placeholder="10-digit number" /></div>
+          <div class="form-group-m form-group-full"><label>Address</label><textarea id="sm-address" rows="2"
+              placeholder="Full address"></textarea></div>
+        </div>
+        <div id="sm-error" style="color:var(--red);font-size:13px;display:none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('student-modal')"
+          style="background:var(--bg);border:1px solid var(--border);">Cancel</button>
+        <button class="btn btn-primary" onclick="saveStudent()">Save Student</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fee Payment Modal -->
+  <!-- <div class="modal-overlay" id="fee-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Record Fee Payment</h3>
+        <button class="modal-close" onclick="closeModal('fee-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="fm-id" />
+        <div id="fm-student-info"
+          style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;"></div>
+        <div class="form-row">
+          <div class="form-group-m">
+            <label>Amount to Pay (₹) *</label>
+            <input type="number" id="fm-amount" placeholder="Enter amount" min="1" />
+          </div>
+          <div class="form-group-m">
+            <label>Payment Mode *</label>
+            <select id="fm-mode">
+              <option value="CASH">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="BANK_TRANSFER">Bank Transfer</option>
+              <option value="CHEQUE">Cheque</option>
+            </select>
+          </div>
+          <div class="form-group-m form-group-full"><label>Remarks</label><input type="text" id="fm-remarks"
+              placeholder="Optional remarks" /></div>
+        </div>
+        <div id="fm-error" style="color:var(--red);font-size:13px;display:none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('fee-modal')"
+          style="background:var(--bg);border:1px solid var(--border);">Cancel</button>
+        <button class="btn btn-primary" onclick="processPayment()">💳 Process Payment</button>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Receipt Modal -->
+  <!-- <div class="modal-overlay" id="receipt-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Payment Receipt</h3>
+        <button class="modal-close" onclick="closeModal('receipt-modal')">✕</button>
+      </div>
+      <div class="modal-body" id="receipt-content"></div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="printReceipt()">🖨 Print Receipt</button>
+        <button class="btn" onclick="closeModal('receipt-modal')"
+          style="background:var(--bg);border:1px solid var(--border);">Close</button>
+      </div>
+    </div>
+  </div> -->
+
+  <script>
+    const API = 'http://localhost:8080/api';
+    let currentSection = 'students';
+    let studentsCache = [];
+    let isClass10 = false;
+    let attRecords = {};
+    let currentgrade = 0;
+
+    function setButtonLoading(button, loading, loadingText = 'Saving...') {
+  if (!button) return;
+
+  if (loading) {
+    button.dataset.originalText = button.innerHTML;
+    button.innerHTML = loadingText;
+    button.classList.add('loading');
+    button.disabled = true;
+  } else {
+    button.innerHTML = button.dataset.originalText || 'Save';
+    button.classList.remove('loading');
+    button.disabled = false;
+  }
+}
+
+    function authHeaders() {
+      return { 'Authorization': 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'application/json' };
+    }
+    async function apiGet(url) {
+      const res = await fetch(API + url, { headers: authHeaders() });
+      if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
+      return res.json();
+    }
+    async function apiPost(url, body) {
+      const res = await fetch(API + url, { method: 'POST', headers: authHeaders(), body: JSON.stringify(body) });
+      if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
+      return res.json();
+    }
+    async function apiPut(url, body) {
+      const res = await fetch(API + url, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(body) });
+      return res.json();
+    }
+    async function apiDelete(url) {
+      return fetch(API + url, { method: 'DELETE', headers: authHeaders() });
+    }
+
+    (async function init() {
+      const name = localStorage.getItem('fullName') || 'Staff';
+      document.getElementById('user-name-display').textContent = name;
+      document.getElementById('avatar-letter').textContent = name.charAt(0).toUpperCase();
+
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('att-date-staff').value = today;
+      loadQuizzes_staff();
+      try {
+        const classes = await apiGet('/classes');
+        const sel = document.getElementById('class-select');
+        classes.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = c.name;
+          opt.dataset.grade = c.grade;
+          sel.appendChild(opt);
+        });
+
+        // Pre-select staff's assigned class
+        const classId = localStorage.getItem('classId');
+        if (classId) { sel.value = classId; }
+        else if (classes.length) { sel.value = classes[0].id; }
+
+        const opt = sel.options[sel.selectedIndex];
+        isClass10 = opt && (parseInt(opt.dataset.grade) === 10 || parseInt(opt.dataset.grade) === 9 || parseInt(opt.dataset.grade) === 8);
+        currentgrade = opt ? parseInt(opt.dataset.grade) : 0
+        loadCurrentSection();
+      } catch (e) { console.error(e); }
+    })();
+
+    function switchSection(name, el) {
+      currentSection = name;
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById('section-' + name).classList.add('active');
+      document.getElementById('section-title').textContent = el.textContent.trim();
+      loadCurrentSection();
+    }
+
+    function loadCurrentSection() {
+      studentsCache = []; // clear old class data
+      const sel = document.getElementById('class-select');
+      const opt = sel.options[sel.selectedIndex];
+      isClass10 = opt && (parseInt(opt.dataset.grade) === 10 || parseInt(opt.dataset.grade) === 9 || parseInt(opt.dataset.grade) === 8);
+
+      if (currentSection === 'students') loadStudents();
+      else if (currentSection === 'marks') loadMarksForm();
+      else if (currentSection === 'attendance') loadAttendanceForm();
+      else if (currentSection === 'quizzes') loadQuizzes_staff();
+    }
+
+    // ============================================================
+    //  STUDENTS
+    // ============================================================
+    async function loadStudents() {
+      const classId = document.getElementById('class-select').value;
+      if (!classId) return;
+      document.getElementById('students-tbody').innerHTML = '<tr class="loading-row"><td colspan="5">Loading...</td></tr>';
+      try {
+        studentsCache = await apiGet(`/staff/students/class/${classId}`);
+        renderStudents();
+      } catch (e) { document.getElementById('students-tbody').innerHTML = '<tr class="loading-row"><td colspan="5">Error loading students.</td></tr>'; }
+    }
+
+    function renderStudents() {
+      if (!studentsCache.length) {
+        document.getElementById('students-tbody').innerHTML = '<tr class="loading-row"><td colspan="5">No students in this class.</td></tr>';
+        return;
+      }
+      document.getElementById('students-tbody').innerHTML = studentsCache.map(s => `
+    <tr>
+      <td><b>${s.rollNumber}</b></td>
+      <td>${s.fullName}</td>
+      <td>${s.guardianName || '—'}</td>
+      <td>${s.contactPhone || '—'}</td>
+      <td><div class="action-group">
+        <button class="btn btn-edit" onclick="openStudentModal(${JSON.stringify(s).replace(/"/g, '&quot;')})">Edit</button>
+        <button class="btn btn-danger" onclick="deleteStudent(${s.id})">Delete</button>
+      </div></td>
+    </tr>`).join('');
+    }
+
+    function openStudentModal(student) {
+      const classId = document.getElementById('class-select').value;
+      document.getElementById('student-modal-title').textContent = student ? 'Edit Student' : 'Add Student';
+      document.getElementById('sm-id').value = student?.id || '';
+      document.getElementById('sm-roll').value = student?.rollNumber || '';
+      document.getElementById('sm-name').value = student?.fullName || '';
+      document.getElementById('sm-dob').value = student?.dateOfBirth || '';
+      document.getElementById('sm-gender').value = student?.gender || '';
+      document.getElementById('sm-guardian').value = student?.guardianName || '';
+      document.getElementById('sm-phone').value = student?.contactPhone || '';
+      document.getElementById('sm-address').value = student?.address || '';
+      document.getElementById('sm-error').style.display = 'none';
+      document.getElementById('student-modal').classList.add('open');
+    }
+
+    async function saveStudent() {
+      const btn =  event.target;
+      setButtonLoading(btn, true, 'Saving Student details...');
+      const id = document.getElementById('sm-id').value;
+      const classId = document.getElementById('class-select').value;
+      const roll = document.getElementById('sm-roll').value.trim();
+      const name = document.getElementById('sm-name').value.trim();
+      const errEl = document.getElementById('sm-error');
+
+      if (!roll || !name) { errEl.textContent = 'Roll number and name are required.'; errEl.style.display = 'block'; return; }
+
+      const body = {
+        rollNumber: roll, fullName: name, dateOfBirth: document.getElementById('sm-dob').value || null,
+        gender: document.getElementById('sm-gender').value || null, guardianName: document.getElementById('sm-guardian').value,
+        contactPhone: document.getElementById('sm-phone').value, address: document.getElementById('sm-address').value, classId
+      };
+
+      try {
+        if (id) await apiPut(`/staff/students/${id}`, body);
+        else await apiPost('/staff/students', body);
+        closeModal('student-modal');
+        setButtonLoading(btn, false);
+        loadStudents();
+      } catch (e) { errEl.textContent = 'Error saving student. Please try again.'; errEl.style.display = 'block'; setButtonLoading(btn, false);}
+    }
+
+    async function deleteStudent(id) {
+      if (!confirm('Delete this student? This action cannot be undone.')) return;
+      await apiDelete(`/staff/students/${id}`);
+      loadStudents();
+    }
+
+    // ============================================================
+    //  MARKS
+    // ============================================================
+    async function loadMarksForm() {
+      const classId = document.getElementById('class-select').value;
+      const year = document.getElementById('year-input').value.trim();
+      if (!classId) return;
+
+      try {
+        studentsCache = await apiGet(`/staff/students/class/${classId}`);
+
+        const examType = document.getElementById('marks-exam-type').value;
+        const existing = await apiGet(`/admin/marks/class/${classId}?academicYear=${year}`);
+        // console.log(existing);
+        // console.log(studentsCache)
+        const existingMap = {};
+        existing.filter(m => m.examType === examType).forEach(m => existingMap[m.studentId] = m);
+        // console.log(existingMap)
+        const grade = parseInt(classId);
+        // console.log(grade);
+        // Build thead
+        const subjects =
+  (grade === 1 || grade === 2)
+    ? [
+        'Telugu',
+        'Hindi',
+        'English',
+        'Maths',
+        'EVS',
+        'GK',
+        'Abacus'
+      ]
+    : (grade >= 3 && grade <= 5)
+      ? [
+          'Telugu',
+          'DBHPS',
+          'English',
+          'Maths',
+          'EVS',
+          'GK',
+          ...(grade >= 3 && grade <= 8 ? ['IIT'] : [])
+        ]
+      : (grade >= 8)
+        ? [
+            'Telugu',
+            'Hindi',
+            'English',
+            'Maths',
+            'Physics', // changed label only
+            'Social',
+            'Biology',
+            ...(grade === 8 ? ['IIT'] : [])
+          ]
+        : [
+            'Telugu',
+            'Hindi',
+            'English',
+            'Maths',
+            'Science',
+            'Social',
+            ...(grade >= 3 && grade <= 8 ? ['IIT'] : [])
+          ];
+
+        document.getElementById('marks-thead').innerHTML = `<tr>
+      <th>Roll No.</th><th>Name</th>
+      ${subjects.map(s => `<th>${s}</th>`).join('')}
+      <th>Total</th></tr>`;
+
+        document.getElementById('marks-tbody').innerHTML = studentsCache.map(s => {
+          // console.log(s);
+          const m = existingMap[s.id] || {};
+          const max = getMaxMarks(examType,grade);
+          const examMax = getMaxMarksforExam(examType, grade);
+          const total = m.totalMarks ? `${m.totalMarks} / ${max}` : '—';
+          // console.log(max);
+          const subjectInputs = ['telugu', 'hindi', 'english', 'maths', 'science', 'social', ...(grade === 1 || grade == 2 ? ['abacus'] : []),
+            ...(grade >= 3 && grade <= 8 ? ['iit'] : []), ...(grade >= 8 ? ['biology'] : [])].map(sub => {
+              const val = m[sub] !== undefined && m[sub] !== null ? m[sub] : 0;
+              return `<td><input type="number" min="0" max="${examMax}" style="width:66px;padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;" value="${val}" id="mk-${s.id}-${sub}" onchange="updateTotal(${s.id})"/></td>`;
+            }).join('');
+          return `<tr>
+        <td><b>${s.rollNumber}</b></td>
+        <td>${s.fullName}</td>
+        ${subjectInputs}
+        <td id="total-${s.id}" style="font-weight:500;">${total}</td>
+      </tr>`;
+        }).join('');
+      } catch (e) { document.getElementById('marks-tbody').innerHTML = '<tr class="loading-row"><td colspan="9">Error loading.</td></tr>'; }
+    }
+
+    function updateTotal(studentId) {
+      const subs = ['telugu', 'hindi', 'english', 'maths', 'science', 'social', ...(isClass10 ? ['biology'] : [])];
+      if (currentgrade === 1 || currentgrade === 2) {
+        subs.push('Abacus');
+      }
+
+      if (currentgrade >= 3 && currentgrade <= 8) {
+        subs.push('iit');
+      }
+      let t = 0;
+      subs.forEach(s => { const el = document.getElementById(`mk-${studentId}-${s}`); if (el && el.value) t += parseFloat(el.value) || 0; });
+      const el = document.getElementById(`total-${studentId}`);
+      if (el) el.textContent = t;
+    }
+    function getMaxMarks(examType,gra) {
+      
+      let subjects = gra===8?8:7;
+      
+      if (examType === 'FA1' || examType === 'FA2' || examType === 'FA3' || examType === 'FA4') {
+        return subjects * 50;
+      }
+
+      if ((examType === 'SA1' || examType === 'SA2') && gra < 9) {
+        return subjects * 100;
+      }
+      if ((examType === 'SA1' || examType === 'SA2') && gra >= 9) {
+        return subjects * 80;
+      }
+
+      return 0;
+    }
+    function getMaxMarksforExam(examType, grade) {
+      if (examType === 'FA1' || examType === 'FA2' || examType === 'FA3' || examType === 'FA4') {
+        return 50;
+      }
+
+      if (grade >= 9) {
+        if (examType === 'SA1' || examType === 'SA2') {
+          return 80;
+        }
+      }
+      if (grade < 9) {
+        if (examType === 'SA1' || examType === 'SA2') {
+          return 100;
+        }
+      }
+
+      return 0;
+    }
+
+    async function saveAllMarks() {
+      const btn = event.target;
+      setButtonLoading(btn, true, 'Saving Marks...');
+      const classId = document.getElementById('class-select').value;
+      const year = document.getElementById('year-input').value.trim();
+      const examType = document.getElementById('marks-exam-type').value;
+
+      const alertEl = document.getElementById('marks-alert');
+      alertEl.className = 'alert';
+      alertEl.style.display = 'none';
+      const grade = parseInt(classId);
+      const subs = [
+        'telugu',
+        'hindi',
+        'english',
+        'maths',
+        'science',
+        'social',
+        ...(grade === 1 || grade === 2 ? ['abacus'] : []),
+        ...(grade >= 3 && grade <= 8 ? ['iit'] : []),
+        ...(grade >= 8 && grade<=10 ? ['biology'] : [])
+      ];
+
+      const promises = studentsCache.map(s => {
+        const body = {
+          studentId: s.id,
+          classId,
+          examType,
+          academicYear: year
+        };
+
+        let maxMarksForExam = getMaxMarksforExam(examType,grade);
+        let totalMarks = 0;
+
+        subs.forEach(sub => {
+          const input = document.getElementById(`mk-${s.id}-${sub}`);
+
+          const val = input
+            ? Math.max(0, Math.min(parseInt(input.value || 0), maxMarksForExam))
+            : 0;
+
+          body[sub] = val;
+          totalMarks += val;
+        });
+
+        body.totalMarks = totalMarks;
+
+        return apiPost('/staff/marks', body).catch(() => null);
+      });
+
+      try {
+        await Promise.all(promises);
+
+        alertEl.textContent = '✓ Marks saved successfully!';
+        alertEl.className = 'alert success';
+        alertEl.style.display = 'block';
+        setButtonLoading(btn, false);
+        setTimeout(() => {
+          alertEl.style.display = 'none';
+        }, 3000);
+
+        loadCurrentSection();
+
+      } catch (e) {
+        alertEl.textContent = 'Error saving marks';
+        alertEl.className = 'alert error';
+        alertEl.style.display = 'block';
+        setButtonLoading(btn, false);
+      }
+    }
+
+    // ============================================================
+    //  ATTENDANCE
+    // ============================================================
+    async function loadAttendanceForm() {
+      const classId = document.getElementById('class-select').value;
+      const date = document.getElementById('att-date-staff').value;
+      if (!classId) return;
+
+      document.getElementById('att-tbody').innerHTML = '<tr class="loading-row"><td colspan="3">Loading...</td></tr>';
+
+      try {
+        studentsCache = await apiGet(`/staff/students/class/${classId}`);
+        const existing = await apiGet(`/staff/attendance/class/${classId}?date=${date}`);
+        const existingMap = {};
+        existing.forEach(r => existingMap[r.studentId] = r.status);
+
+        attRecords = {};
+        studentsCache.forEach(s => { attRecords[s.id] = existingMap[s.id] || 'PRESENT'; });
+
+        renderAttendanceForm();
+      } catch (e) {
+        document.getElementById('att-tbody').innerHTML = '<tr class="loading-row"><td colspan="3">Error loading.</td></tr>';
+      }
+    }
+
+    function renderAttendanceForm() {
+      document.getElementById('att-tbody').innerHTML = studentsCache.map(s => {
+        const isPresent = attRecords[s.id] === 'PRESENT';
+        return `<tr>
+      <td><b>${s.rollNumber}</b></td>
+      <td>${s.fullName}</td>
+      <td>
+        <div class="att-toggle">
+          <label class="toggle-switch" title="Toggle attendance">
+            <input type="checkbox" ${isPresent ? 'checked' : ''} onchange="toggleAtt(${s.id}, this.checked)"/>
+            <span class="toggle-track"></span>
+            <span class="toggle-thumb"></span>
+          </label>
+          <span class="att-label ${isPresent ? 'present' : 'absent'}" id="att-label-${s.id}">${isPresent ? 'PRESENT' : 'ABSENT'}</span>
+        </div>
+      </td>
+    </tr>`;
+      }).join('');
+    }
+
+    function toggleAtt(studentId, checked) {
+      attRecords[studentId] = checked ? 'PRESENT' : 'ABSENT';
+      const lbl = document.getElementById(`att-label-${studentId}`);
+      if (lbl) { lbl.textContent = checked ? 'PRESENT' : 'ABSENT'; lbl.className = `att-label ${checked ? 'present' : 'absent'}`; }
+    }
+
+    function markAllPresent() {
+      studentsCache.forEach(s => { attRecords[s.id] = 'PRESENT'; });
+      renderAttendanceForm();
+    }
+
+    async function saveAttendance() {
+      const btn = event.target;
+      setButtonLoading(btn, true, 'Saving Attendance...');
+      const classId = document.getElementById('class-select').value;
+      const date = document.getElementById('att-date-staff').value;
+      const alertEl = document.getElementById('att-alert');
+      alertEl.className = 'alert'; alertEl.style.display = 'none';
+
+      const records = Object.entries(attRecords).map(([studentId, status]) => ({
+        studentId: parseInt(studentId), status
+      }));
+
+      try {
+        await apiPost('/staff/attendance', { classId: parseInt(classId), date, records });
+        alertEl.textContent = '✓ Attendance saved successfully!';
+        alertEl.className = 'alert success';
+        setButtonLoading(btn, false);
+        setTimeout(() => { alertEl.style.display = 'none'; }, 3000);
+      } catch (e) {
+        alertEl.textContent = 'Error saving attendance.';
+        alertEl.className = 'alert error';
+        setButtonLoading(btn, false);
+      }
+    }
+
+    // ============================================================
+    //  FEES
+    // ============================================================
+    //   async function loadFees() {
+    //     const classId = document.getElementById('class-select').value;
+    //     const year = document.getElementById('year-input').value.trim();
+    //     if (!classId) return;
+    //     document.getElementById('fees-tbody').innerHTML = '<tr class="loading-row"><td colspan="8">Loading...</td></tr>';
+    //     try {
+    //       const fees = await apiGet(`/staff/fees/class/${classId}?academicYear=${year}`);
+    //       if (!fees.length) {
+    //         document.getElementById('fees-tbody').innerHTML = '<tr class="loading-row"><td colspan="8">No fee records found.</td></tr>';
+    //         return;
+    //       }
+    //       document.getElementById('fees-tbody').innerHTML = fees.map(f => `
+    //     <tr>
+    //       <td><b>${f.rollNumber}</b></td>
+    //       <td>${f.studentName}</td>
+    //       <td>${f.term.replace('_', ' ')}</td>
+    //       <td>₹${parseFloat(f.amountDue).toLocaleString()}</td>
+    //       <td style="color:var(--green);font-weight:500;">₹${parseFloat(f.amountPaid).toLocaleString()}</td>
+    //       <td style="color:${parseFloat(f.balance) > 0 ? 'var(--red)' : 'var(--green)'};font-weight:500;">₹${parseFloat(f.balance).toLocaleString()}</td>
+    //       <td><span class="badge ${f.status.toLowerCase()}">${f.status}</span></td>
+    //       <td><div class="action-group">
+    //         ${f.status !== 'PAID' ? `<button class="btn btn-primary" onclick='openFeeModal(${JSON.stringify(f).replace(/"/g, "&quot;")})'>Pay</button>` : ''}
+    //         ${f.receiptNumber ? `<button class="btn btn-success" onclick='showReceipt(${JSON.stringify(f).replace(/"/g, "&quot;")})'>Receipt</button>` : ''}
+    //       </div></td>
+    //     </tr>`).join('');
+    //     } catch (e) {
+    //       document.getElementById('fees-tbody').innerHTML = '<tr class="loading-row"><td colspan="8">Error loading fees.</td></tr>';
+    //     }
+    //   }
+
+    //   function openFeeModal(fee) {
+    //     document.getElementById('fm-id').value = fee.id;
+    //     document.getElementById('fm-amount').value = '';
+    //     document.getElementById('fm-mode').value = 'CASH';
+    //     document.getElementById('fm-remarks').value = '';
+    //     document.getElementById('fm-error').style.display = 'none';
+    //     document.getElementById('fm-student-info').innerHTML = `
+    //   <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+    //     <div><b>${fee.studentName}</b> (${fee.rollNumber})</div>
+    //     <div>${fee.className} — ${fee.term.replace('_', ' ')}</div>
+    //   </div>
+    //   <div style="display:flex;gap:24px;margin-top:10px;flex-wrap:wrap;">
+    //     <div style="font-size:12px;color:var(--ink2)">Total Due<br><b style="font-size:16px;color:var(--ink);">₹${parseFloat(fee.amountDue).toLocaleString()}</b></div>
+    //     <div style="font-size:12px;color:var(--ink2)">Already Paid<br><b style="font-size:16px;color:var(--green);">₹${parseFloat(fee.amountPaid).toLocaleString()}</b></div>
+    //     <div style="font-size:12px;color:var(--ink2)">Balance<br><b style="font-size:16px;color:var(--red);">₹${parseFloat(fee.balance).toLocaleString()}</b></div>
+    //   </div>`;
+    //     document.getElementById('fee-modal').classList.add('open');
+    //   }
+
+    //   async function processPayment() {
+    //     const id = document.getElementById('fm-id').value;
+    //     const amount = parseFloat(document.getElementById('fm-amount').value);
+    //     const mode = document.getElementById('fm-mode').value;
+    //     const remarks = document.getElementById('fm-remarks').value;
+    //     const errEl = document.getElementById('fm-error');
+
+    //     if (!amount || amount <= 0) { errEl.textContent = 'Please enter a valid amount.'; errEl.style.display = 'block'; return; }
+
+    //     try {
+    //       const result = await apiPost('/staff/fees/pay', { id: parseInt(id), amountPaid: amount, paymentMode: mode, remarks });
+    //       closeModal('fee-modal');
+    //       showReceipt(result);
+    //       loadFees();
+    //     } catch (e) { errEl.textContent = 'Payment failed. Please try again.'; errEl.style.display = 'block'; }
+    //   }
+
+    //   function showReceipt(fee) {
+    //     const paidDate = fee.paymentDate ? new Date(fee.paymentDate).toLocaleString('en-IN') : '—';
+    //     document.getElementById('receipt-content').innerHTML = `
+    //   <div class="receipt-box" id="printable-receipt">
+    //     <div class="receipt-header">
+    //       <div class="receipt-logo">School Management System</div>
+    //       <div class="receipt-title">Fee Payment Receipt</div>
+    //       <div class="receipt-no">${fee.receiptNumber || 'N/A'}</div>
+    //     </div>
+    //     <div class="receipt-row"><span class="key">Student Name</span><span class="val">${fee.studentName}</span></div>
+    //     <div class="receipt-row"><span class="key">Roll Number</span><span class="val">${fee.rollNumber}</span></div>
+    //     <div class="receipt-row"><span class="key">Class</span><span class="val">${fee.className}</span></div>
+    //     <div class="receipt-row"><span class="key">Academic Year</span><span class="val">${fee.academicYear}</span></div>
+    //     <div class="receipt-row"><span class="key">Term</span><span class="val">${fee.term.replace('_', ' ')}</span></div>
+    //     <div class="receipt-row"><span class="key">Payment Mode</span><span class="val">${fee.paymentMode || '—'}</span></div>
+    //     <div class="receipt-row"><span class="key">Date & Time</span><span class="val">${paidDate}</span></div>
+    //     <div class="receipt-total">
+    //       <span class="key">Amount Paid</span>
+    //       <span class="val">₹${parseFloat(fee.amountPaid).toLocaleString()}</span>
+    //     </div>
+    //     ${fee.status === 'PAID' ? '<div style="text-align:center;margin-top:16px;"><div class="stamp-badge">PAID IN FULL</div></div>' : ''}
+    //     <div class="receipt-stamp">This is a computer-generated receipt and does not require a signature.<br>Thank you for your payment.</div>
+    //   </div>`;
+    //     document.getElementById('receipt-modal').classList.add('open');
+    //   }
+
+    //   function printReceipt() {
+    //     const content = document.getElementById('printable-receipt').outerHTML;
+    //     const w = window.open('', '_blank');
+    //     w.document.write(`<html><head><title>Fee Receipt</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=DM+Sans&display=swap" rel="stylesheet"/><style>
+    //   body{font-family:'DM Sans',sans-serif;background:#fff;display:flex;justify-content:center;padding:32px;}
+    //   .receipt-box{border:2px solid #e4e2da;border-radius:12px;padding:28px;max-width:480px;width:100%;}
+    //   .receipt-header{text-align:center;border-bottom:2px dashed #e4e2da;padding-bottom:16px;margin-bottom:16px;}
+    //   .receipt-logo{font-family:'Playfair Display',serif;font-size:20px;}
+    //   .receipt-title{font-size:13px;color:#5c5c80;margin-top:4px;}
+    //   .receipt-no{display:inline-block;margin-top:8px;padding:3px 12px;border-radius:20px;background:#eff6ff;color:#2563eb;font-size:12px;}
+    //   .receipt-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid #f1f0ec;}
+    //   .receipt-row .key{color:#5c5c80;} .receipt-row .val{font-weight:500;}
+    //   .receipt-total{background:#f1f0ec;border-radius:8px;padding:12px 14px;margin-top:12px;display:flex;justify-content:space-between;align-items:center;}
+    //   .receipt-total .key{font-size:13px;font-weight:500;} .receipt-total .val{font-size:20px;font-weight:500;color:#16a34a;font-family:'Playfair Display',serif;}
+    //   .receipt-stamp{text-align:center;margin-top:20px;font-size:11px;color:#5c5c80;}
+    //   .stamp-badge{display:inline-block;border:2px solid #16a34a;color:#16a34a;padding:4px 16px;border-radius:4px;font-weight:500;font-size:13px;transform:rotate(-4deg);margin-bottom:8px;}
+    // </style></head><body>${content}</body></html>`);
+    //     w.document.close();
+    //     setTimeout(() => w.print(), 500);
+    //   }
+
+    // ---- Helpers ----
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+
+    // ============================================================
+    //  QUIZ JS — helper to safely escape attribute values
+    // ============================================================
+    function esc(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    let questionCount = 0;
+    window.editQuizId = null;
+
+    function openNewQuizForm() {
+      window.editQuizId = null;
+      document.getElementById('quiz-form-mode-title').textContent = 'Create New Quiz';
+      document.getElementById('quiz-save-btn').textContent = '💾 Save Quiz';
+      // Reset all fields
+      document.getElementById('qf-title').value = '';
+      document.getElementById('qf-subject').value = 'TELUGU';
+      document.getElementById('qf-duration').value = 30;
+      document.getElementById('qf-total').value = 10;
+      document.getElementById('qf-passing').value = 4;
+      document.getElementById('qf-status').value = 'PUBLISHED';
+      document.getElementById('qf-desc').value = '';
+      document.getElementById('questions-list').innerHTML = '';
+      questionCount = 0;
+      document.getElementById('quiz-form-wrap').style.display = 'block';
+      addQuestion();  // start with one blank question
+    }
+
+    function cancelQuizForm() {
+      window.editQuizId = null;
+      document.getElementById('quiz-form-wrap').style.display = 'none';
+      document.getElementById('questions-list').innerHTML = '';
+      questionCount = 0;
+    }
+
+    function addQuestion(prefill) {
+      questionCount++;
+      const n = questionCount;
+      const q = prefill || {};
+      const div = document.createElement('div');
+      div.id = `q-block-${n}`;
+      div.style.cssText = 'background:var(--bg);border-radius:10px;padding:16px;margin-bottom:12px;';
+      div.innerHTML = `
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <span style="font-size:13px;font-weight:500;">Question ${n}</span>
+              <button onclick="document.getElementById('q-block-${n}').remove();"
+                style="background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;">✕ Remove</button>
+            </div>
+            <div class="form-row">
+              <div class="form-group-m form-group-full">
+                <label>Question Text *</label>
+                <input type="text" id="qt-${n}" value="${esc(q.questionText)}" placeholder="Enter question..."/>
+              </div>
+              <div class="form-group-m"><label>Option A *</label><input type="text" id="qa-${n}" value="${esc(q.optionA)}" placeholder="Option A"/></div>
+              <div class="form-group-m"><label>Option B *</label><input type="text" id="qb-${n}" value="${esc(q.optionB)}" placeholder="Option B"/></div>
+              <div class="form-group-m"><label>Option C *</label><input type="text" id="qc-${n}" value="${esc(q.optionC)}" placeholder="Option C"/></div>
+              <div class="form-group-m"><label>Option D *</label><input type="text" id="qd-${n}" value="${esc(q.optionD)}" placeholder="Option D"/></div>
+              <div class="form-group-m">
+                <label>Correct Answer *</label>
+                <select id="qans-${n}">
+                  <option value="A" ${q.correctOption === 'A' ? 'selected' : ''}>A</option>
+                  <option value="B" ${q.correctOption === 'B' ? 'selected' : ''}>B</option>
+                  <option value="C" ${q.correctOption === 'C' ? 'selected' : ''}>C</option>
+                  <option value="D" ${q.correctOption === 'D' ? 'selected' : ''}>D</option>
+                </select>
+              </div>
+              <div class="form-group-m"><label>Marks</label><input type="number" id="qmarks-${n}" value="${q.marks || 1}" min="1"/></div>
+            </div>`;
+      document.getElementById('questions-list').appendChild(div);
+    }
+
+    async function saveQuiz() {
+      const btn =  event.target;
+      setButtonLoading(btn, true, 'Saving Quiz...');
+      const classId = document.getElementById('class-select').value;
+      if (!classId) { alert('Please select a class first.'); return; }
+
+      const title = document.getElementById('qf-title').value.trim();
+      const subject = document.getElementById('qf-subject').value;
+      if (!title || !subject) { alert('Title and subject are required.'); return; }
+
+      // Collect questions from all q-block-N divs
+      const questions = [];
+      const blocks = document.querySelectorAll('[id^="q-block-"]');
+      for (const b of blocks) {
+        const n = b.id.split('-').pop();
+        const qt = document.getElementById(`qt-${n}`)?.value.trim();
+        if (!qt) { alert(`Question ${n} text is required.`); return; }
+        questions.push({
+          questionText: qt,
+          optionA: document.getElementById(`qa-${n}`).value,
+          optionB: document.getElementById(`qb-${n}`).value,
+          optionC: document.getElementById(`qc-${n}`).value,
+          optionD: document.getElementById(`qd-${n}`).value,
+          correctOption: document.getElementById(`qans-${n}`).value,
+          marks: parseInt(document.getElementById(`qmarks-${n}`).value) || 1
+        });
+      }
+      if (!questions.length) { alert('Add at least one question.'); return; }
+
+      const payload = {
+        title,
+        description: document.getElementById('qf-desc').value.trim(),
+        classId: parseInt(classId),
+        subject,
+        durationMins: parseInt(document.getElementById('qf-duration').value),
+        totalMarks: parseInt(document.getElementById('qf-total').value),
+        passingMarks: parseInt(document.getElementById('qf-passing').value),
+        scheduledAt: document.getElementById('qf-scheduledAt').value,
+        expiresAt: document.getElementById("qf-expire").value,
+        status: document.getElementById('qf-status').value,
+        questions
+      };
+
+      try {
+        if (window.editQuizId) {
+          await apiPut(`/staff/quizzes/${window.editQuizId}`, payload);
+          alert('Quiz updated successfully!');
+        } else {
+          await apiPost('/staff/quizzes', payload);
+          alert('Quiz created successfully!');
+        }
+        setButtonLoading(btn, false);
+        cancelQuizForm();
+        
+        loadQuizzes_staff();
+      } catch (e) { alert('Error saving quiz: ' + e.message); setButtonLoading(btn, false);}
+    }
+
+    async function loadQuizzes_staff() {
+      const classId = document.getElementById('class-select').value;
+      if (!classId) return;
+      document.getElementById('quiz-tbody').innerHTML = '<tr class="loading-row"><td colspan="7">Loading...</td></tr>';
+      try {
+        const quizzes = await apiGet(`/staff/quizzes/class/${classId}`);
+        if (!quizzes.length) {
+          document.getElementById('quiz-tbody').innerHTML = '<tr class="loading-row"><td colspan="7">No quizzes yet. Create one above.</td></tr>';
+          return;
+        }
+        document.getElementById('quiz-tbody').innerHTML = quizzes.map(q => {
+          const statusStyle =
+            q.status === 'PUBLISHED' ? 'background:#dcfce7;color:#15803d' :
+              q.status === 'DRAFT' ? 'background:#fef3c7;color:#b45309' :
+                'background:#f3f4f6;color:#6b7280';
+          return `<tr>
+                <td><b>${q.title}</b></td>
+                <td><span style="font-size:11px;padding:3px 8px;background:#eff6ff;color:var(--accent);border-radius:6px;">${q.subject}</span></td>
+                <td>${q.durationMins} min</td>
+                <td>${q.totalMarks} (pass: ${q.passingMarks})</td>
+                <td><span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;${statusStyle}">${q.status}</span></td>
+                <td>${q.questionCount}</td>
+                <td><div class="action-group">
+                  ${q.status === 'DRAFT' ? `<button class="btn btn-primary" onclick="changeQuizStatus(${q.id},'PUBLISHED')">Publish</button>` : ''}
+                  ${q.status === 'PUBLISHED' ? `<button class="btn btn-edit" onclick="changeQuizStatus(${q.id},'CLOSED')">Close</button>` : ''}
+                  <button class="btn btn-edit"    onclick="editQuiz(${q.id})">✏ Edit</button>
+                  <button class="btn btn-danger"  onclick="deleteQuiz(${q.id})">Delete</button>
+                  <button class="btn btn-success" onclick="showQuizResults(${q.id},'${q.title.replace(/'/g, "\\'")}')">Results</button>
+                </div></td>
+              </tr>`;
+        }).join('');
+      } catch (e) {
+        document.getElementById('quiz-tbody').innerHTML = '<tr class="loading-row"><td colspan="7">Error loading quizzes.</td></tr>';
+      }
+    }
+
+    async function changeQuizStatus(quizId, status) {
+      await apiPut(`/staff/quizzes/${quizId}/status`, { status });
+      loadQuizzes_staff();
+    }
+
+    async function deleteQuiz(id) {
+      if (!confirm('Delete this quiz permanently? All student attempts will also be deleted.')) return;
+      try {
+        await apiDelete(`/staff/quizzes/${id}`);
+        loadQuizzes_staff();
+        document.getElementById('quiz-results-area').style.display = 'none';
+      } catch (e) { alert('Error deleting quiz: ' + e.message); }
+    }
+
+    // ============================================================
+    //  EDIT QUIZ — pre-fill the form with existing data
+    // ============================================================
+    async function editQuiz(id) {
+      try {
+
+        const quiz = await apiGet(`/staff/quizzes/${id}`);
+
+        // console.log("Quiz received:");
+        // console.log(quiz);
+
+        toggleQuizForm();
+
+        document.getElementById('qf-title').value =
+          quiz.title || '';
+
+        document.getElementById('qf-subject').value =
+          quiz.subject || '';
+
+        document.getElementById('qf-duration').value =
+          quiz.durationMins || '';
+
+        document.getElementById('qf-total').value =
+          quiz.totalMarks || '';
+
+        document.getElementById('qf-passing').value =
+          quiz.passingMarks || '';
+
+        document.getElementById('qf-status').value =
+          quiz.status || '';
+
+        document.getElementById('qf-desc').value =
+          quiz.description || '';
+
+        // document.getElementById('qf-schedule').value =
+        //   quiz.scheduledAt ?
+        //     quiz.scheduledAt.slice(0, 16) : '';
+
+        // document.getElementById('qf-expire').value =
+        //   quiz.expiresAt ?
+        //     quiz.expiresAt.slice(0, 16) : '';
+
+        // Questions
+        const container =
+          document.getElementById("questions-list");
+
+        container.innerHTML = "";
+
+        if (quiz.questions) {
+
+          quiz.questions.forEach(q => {
+
+            addQuestion({
+              questionText: q.questionText,
+              optionA: q.optionA,
+              optionB: q.optionB,
+              optionC: q.optionC,
+              optionD: q.optionD,
+              correctOption: q.correctOption,
+              marks: q.marks
+            });
+
+          });
+
+        }
+
+        window.editQuizId = id;
+
+      } catch (e) {
+
+        console.log("FULL ERROR:");
+        console.log(e);
+
+        alert(
+          "Error: "
+          + (e.message || JSON.stringify(e))
+        );
+      }
+    }
+
+    async function toggleQuizForm() {
+
+      const form =
+        document.getElementById("quiz-form-wrap");
+
+      if (!form) return;
+
+      form.style.display =
+        form.style.display === "none"
+          ? "block"
+          : "none";
+    }
+
+    async function showQuizResults(quizId, title) {
+      document.getElementById('quiz-results-area').style.display = 'block';
+      document.getElementById('results-quiz-title').textContent = `Results: ${title}`;
+      document.getElementById('results-tbody').innerHTML = '<tr class="loading-row"><td colspan="6">Loading...</td></tr>';
+      try {
+        const results = await apiGet(`/staff/quizzes/${quizId}/results`);
+        if (!results.length) {
+          document.getElementById('results-tbody').innerHTML = '<tr class="loading-row"><td colspan="6">No attempts yet.</td></tr>';
+          return;
+        }
+        document.getElementById('results-tbody').innerHTML = results.map(r => `
+              <tr>
+                <td><b>${r.rollNumber}</b></td>
+                <td>${r.studentName}</td>
+                <td style="font-weight:500;">${r.score} / ${r.totalMarks}</td>
+                <td>${r.correctAnswers} / ${r.totalQuestions}</td>
+                <td><span style="display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;${r.passed ? 'background:#dcfce7;color:#15803d' : 'background:#fee2e2;color:#b91c1c'}">${r.passed ? 'Passed' : 'Failed'}</span></td>
+                <td style="font-size:11px;color:var(--ink2);">${r.submittedAt ? new Date(r.submittedAt).toLocaleString('en-IN') : '—'}</td>
+              </tr>`).join('');
+      } catch (e) {
+        document.getElementById('results-tbody').innerHTML = '<tr class="loading-row"><td colspan="6">Error.</td></tr>';
+      }
+    }
+
+  </script>
+</body>
+
+</html>

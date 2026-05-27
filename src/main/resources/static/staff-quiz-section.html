@@ -1,0 +1,258 @@
+<!-- ============================================================
+     QUIZ MANAGEMENT SECTION — Add this inside staff-dashboard.html
+     
+     1. Add this nav item to the sidebar .nav:
+        <div class="nav-item" onclick="switchSection('quizzes', this)">
+          <span class="icon">🧪</span> Quizzes
+        </div>
+
+     2. Add this section inside .content:
+        (paste the full block below)
+
+     3. Add the quizzes JS at the bottom of the <script> tag.
+============================================================ -->
+
+<!-- =================== QUIZZES SECTION =================== -->
+<div class="section" id="section-quizzes">
+
+  <!-- Create Quiz Form -->
+  <div class="table-wrap" style="margin-bottom:20px;">
+    <div class="table-header">
+      <h3>Create New Quiz</h3>
+      <button class="btn btn-primary" onclick="toggleQuizForm()">+ New Quiz</button>
+    </div>
+    <div id="quiz-form-wrap" style="display:none;padding:22px;border-top:1px solid var(--border);">
+      <div class="form-row">
+        <div class="form-group-m">
+          <label>Quiz Title *</label>
+          <input type="text" id="qf-title" placeholder="e.g. Maths Unit Test 1"/>
+        </div>
+        <div class="form-group-m">
+          <label>Subject *</label>
+          <select id="qf-subject">
+            <option value="TELUGU">Telugu</option><option value="HINDI">Hindi</option>
+            <option value="ENGLISH">English</option><option value="MATHS">Maths</option>
+            <option value="SCIENCE">Science</option><option value="SOCIAL">Social</option>
+            <option value="BIOLOGY">Biology</option>
+          </select>
+        </div>
+        <div class="form-group-m">
+          <label>Duration (minutes) *</label>
+          <input type="number" id="qf-duration" value="30" min="5"/>
+        </div>
+        <div class="form-group-m">
+          <label>Total Marks *</label>
+          <input type="number" id="qf-total" value="10" min="1"/>
+        </div>
+        <div class="form-group-m">
+          <label>Passing Marks *</label>
+          <input type="number" id="qf-passing" value="4" min="1"/>
+        </div>
+        <div class="form-group-m">
+          <label>Status</label>
+          <select id="qf-status">
+            <option value="PUBLISHED">Published (visible to students)</option>
+            <option value="DRAFT">Draft (hidden)</option>
+          </select>
+        </div>
+        <div class="form-group-m form-group-full">
+          <label>Description</label>
+          <input type="text" id="qf-desc" placeholder="Optional description"/>
+        </div>
+      </div>
+
+      <!-- Questions builder -->
+      <div style="margin-top:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <label style="font-size:13px;font-weight:500;color:var(--ink);text-transform:none;letter-spacing:0;">Questions</label>
+          <button class="btn btn-edit" onclick="addQuestion()">+ Add Question</button>
+        </div>
+        <div id="questions-list"></div>
+      </div>
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">
+        <button class="btn" onclick="toggleQuizForm()" style="background:var(--bg);border:1px solid var(--border);">Cancel</button>
+        <button class="btn btn-primary" onclick="saveQuiz()">💾 Save Quiz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz list -->
+  <div class="table-wrap">
+    <div class="table-header"><h3>All Quizzes</h3></div>
+    <table>
+      <thead>
+        <tr><th>Title</th><th>Subject</th><th>Duration</th><th>Marks</th><th>Status</th><th>Questions</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="quiz-tbody">
+        <tr class="loading-row"><td colspan="7">Select a class to view quizzes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Results modal trigger area -->
+  <div id="quiz-results-area" style="margin-top:20px;display:none;">
+    <div class="table-wrap">
+      <div class="table-header"><h3 id="results-quiz-title">Quiz Results</h3></div>
+      <table>
+        <thead><tr><th>Roll No.</th><th>Name</th><th>Score</th><th>Correct</th><th>Status</th><th>Submitted</th></tr></thead>
+        <tbody id="results-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===========================================================
+     QUIZ JS — add inside the existing <script> tag
+=========================================================== -->
+<script>
+let questionCount = 0;
+
+function toggleQuizForm() {
+  const wrap = document.getElementById('quiz-form-wrap');
+  wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+  if (wrap.style.display === 'block' && questionCount === 0) addQuestion();
+}
+
+function addQuestion() {
+  questionCount++;
+  const n = questionCount;
+  const div = document.createElement('div');
+  div.id = `q-block-${n}`;
+  div.style.cssText = 'background:var(--bg);border-radius:10px;padding:16px;margin-bottom:12px;';
+  div.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span style="font-size:13px;font-weight:500;">Question ${n}</span>
+      <button onclick="document.getElementById('q-block-${n}').remove();questionCount--;" 
+        style="background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;">✕ Remove</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group-m form-group-full">
+        <label>Question Text *</label>
+        <input type="text" id="qt-${n}" placeholder="Enter question..."/>
+      </div>
+      <div class="form-group-m"><label>Option A *</label><input type="text" id="qa-${n}" placeholder="Option A"/></div>
+      <div class="form-group-m"><label>Option B *</label><input type="text" id="qb-${n}" placeholder="Option B"/></div>
+      <div class="form-group-m"><label>Option C *</label><input type="text" id="qc-${n}" placeholder="Option C"/></div>
+      <div class="form-group-m"><label>Option D *</label><input type="text" id="qd-${n}" placeholder="Option D"/></div>
+      <div class="form-group-m">
+        <label>Correct Answer *</label>
+        <select id="qans-${n}">
+          <option value="A">A</option><option value="B">B</option>
+          <option value="C">C</option><option value="D">D</option>
+        </select>
+      </div>
+      <div class="form-group-m"><label>Marks</label><input type="number" id="qmarks-${n}" value="1" min="1"/></div>
+    </div>`;
+  document.getElementById('questions-list').appendChild(div);
+}
+
+async function saveQuiz() {
+  const classId = document.getElementById('class-select').value;
+  if (!classId) { alert('Please select a class first.'); return; }
+
+  const title    = document.getElementById('qf-title').value.trim();
+  const subject  = document.getElementById('qf-subject').value;
+  const duration = parseInt(document.getElementById('qf-duration').value);
+  const total    = parseInt(document.getElementById('qf-total').value);
+  const passing  = parseInt(document.getElementById('qf-passing').value);
+  const status   = document.getElementById('qf-status').value;
+  const desc     = document.getElementById('qf-desc').value.trim();
+
+  if (!title || !subject) { alert('Title and subject are required.'); return; }
+
+  // Collect questions
+  const questions = [];
+  const blocks = document.querySelectorAll('[id^="q-block-"]');
+  for (let b of blocks) {
+    const n = b.id.split('-')[2];
+    const qt = document.getElementById(`qt-${n}`)?.value.trim();
+    if (!qt) { alert(`Question ${n} text is required.`); return; }
+    questions.push({
+      questionText: qt,
+      optionA: document.getElementById(`qa-${n}`).value,
+      optionB: document.getElementById(`qb-${n}`).value,
+      optionC: document.getElementById(`qc-${n}`).value,
+      optionD: document.getElementById(`qd-${n}`).value,
+      correctOption: document.getElementById(`qans-${n}`).value,
+      marks: parseInt(document.getElementById(`qmarks-${n}`).value) || 1
+    });
+  }
+
+  if (!questions.length) { alert('Add at least one question.'); return; }
+
+  try {
+    await apiPost('/staff/quizzes', {
+      title, description: desc, classId: parseInt(classId),
+      subject, durationMins: duration, totalMarks: total,
+      passingMarks: passing, status, questions
+    });
+    toggleQuizForm();
+    document.getElementById('questions-list').innerHTML = '';
+    questionCount = 0;
+    document.getElementById('qf-title').value = '';
+    loadQuizzes_staff();
+    alert('Quiz created successfully!');
+  } catch(e) { alert('Error creating quiz: ' + e.message); }
+}
+
+async function loadQuizzes_staff() {
+  const classId = document.getElementById('class-select').value;
+  if (!classId) return;
+  document.getElementById('quiz-tbody').innerHTML = '<tr class="loading-row"><td colspan="7">Loading...</td></tr>';
+
+  try {
+    const quizzes = await apiGet(`/staff/quizzes/class/${classId}`);
+    if (!quizzes.length) {
+      document.getElementById('quiz-tbody').innerHTML = '<tr class="loading-row"><td colspan="7">No quizzes yet.</td></tr>';
+      return;
+    }
+    document.getElementById('quiz-tbody').innerHTML = quizzes.map(q => `
+      <tr>
+        <td><b>${q.title}</b></td>
+        <td><span style="font-size:11px;padding:3px 8px;background:#eff6ff;color:var(--accent);border-radius:6px;">${q.subject}</span></td>
+        <td>${q.durationMins} min</td>
+        <td>${q.totalMarks} (pass: ${q.passingMarks})</td>
+        <td><span class="badge ${q.status==='PUBLISHED'?'paid':q.status==='DRAFT'?'pending':'partial'}">${q.status}</span></td>
+        <td>${q.questionCount}</td>
+        <td><div class="action-group">
+          ${q.status==='DRAFT' ? `<button class="btn btn-primary" onclick="changeQuizStatus(${q.id},'PUBLISHED')">Publish</button>` : ''}
+          ${q.status==='PUBLISHED' ? `<button class="btn btn-edit" onclick="changeQuizStatus(${q.id},'CLOSED')">Close</button>` : ''}
+          <button class="btn btn-success" onclick="showQuizResults(${q.id},'${q.title}')">Results</button>
+        </div></td>
+      </tr>`).join('');
+  } catch(e) {
+    document.getElementById('quiz-tbody').innerHTML = '<tr class="loading-row"><td colspan="7">Error.</td></tr>';
+  }
+}
+
+async function changeQuizStatus(quizId, status) {
+  await apiPut(`/staff/quizzes/${quizId}/status`, { status });
+  loadQuizzes_staff();
+}
+
+async function showQuizResults(quizId, title) {
+  document.getElementById('quiz-results-area').style.display = 'block';
+  document.getElementById('results-quiz-title').textContent = `Results: ${title}`;
+  document.getElementById('results-tbody').innerHTML = '<tr class="loading-row"><td colspan="6">Loading...</td></tr>';
+
+  try {
+    const results = await apiGet(`/staff/quizzes/${quizId}/results`);
+    if (!results.length) {
+      document.getElementById('results-tbody').innerHTML = '<tr class="loading-row"><td colspan="6">No attempts yet.</td></tr>';
+      return;
+    }
+    document.getElementById('results-tbody').innerHTML = results.map(r => `
+      <tr>
+        <td><b>${r.rollNumber}</b></td>
+        <td>${r.studentName}</td>
+        <td style="font-weight:500;">${r.score} / ${r.totalMarks}</td>
+        <td>${r.correctAnswers} / ${r.totalQuestions}</td>
+        <td><span class="badge ${r.passed?'paid':'pending'}">${r.passed?'Passed':'Failed'}</span></td>
+        <td style="font-size:11px;color:var(--ink2);">${r.submittedAt ? new Date(r.submittedAt).toLocaleString('en-IN') : '—'}</td>
+      </tr>`).join('');
+  } catch(e) {
+    document.getElementById('results-tbody').innerHTML = '<tr class="loading-row"><td colspan="6">Error loading results.</td></tr>';
+  }
+}
+</script>

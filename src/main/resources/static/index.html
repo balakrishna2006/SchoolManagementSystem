@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glory English Medium High School</title>
+    <link rel="icon" type="image/png"
+        href="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-99hhqvsjdn.jpg">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f6f8fc;
+            color: #222;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 60px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2a4b8d;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .1);
+            text-align: center;
+            transition: .3s;
+        }
+
+        a {
+            color: white;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        .insta-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px 16px;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .insta-link:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: fill;
+            /* changed from fill */
+            border-radius: 15px;
+            transition: .3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.04);
+        }
+
+        .about {
+            background: #f6f8fc;
+            padding: 70px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .about p {
+            width: 85%;
+            margin: auto;
+            line-height: 2;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .login-btn {
+            background: #2a4b8d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.9;
+            text-align: center;
+            line-height: 1.8;
+            background-color: blue;
+            color: white;
+
+        }
+
+        .hero {
+            height: 90vh;
+            background:
+                linear-gradient(rgba(0, 0, 0, .45), rgba(0, 0, 0, .45)),
+                url("https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2000");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content {
+            width: 80%;
+        }
+
+        .contact-card p {
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+            font-family: 'Playfair Display';
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            padding: 70px;
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 38px;
+            color: #2a4b8d;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .1);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .card p {
+            word-break: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.7;
+        }
+
+        .card h3 {
+            margin: 15px 0;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: fill;
+            border-radius: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 60px;
+            background: #2a4b8d;
+            color: white;
+        }
+
+        .footer h2 {
+            margin-bottom: 20px;
+        }
+
+        /* ================= FULL RESPONSIVE ================= */
+
+        @media screen and (max-width:1024px) {
+
+            .navbar {
+                padding: 15px 25px;
+            }
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section,
+            .about {
+                padding: 50px 25px;
+            }
+        }
+
+
+        @media screen and (max-width:768px) {
+
+            /* Navbar */
+
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .logo {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+                flex-wrap: wrap;
+            }
+
+            .logo img {
+                width: 45px !important;
+                height: 45px !important;
+            }
+
+            .logo div {
+                font-size: 18px !important;
+                width: 100%;
+            }
+
+            .login-btn {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            /* Hero section */
+
+            .hero {
+                min-height: 70vh;
+                height: auto;
+                padding: 40px 20px;
+            }
+
+            .hero-content {
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+                line-height: 1.4;
+                margin-bottom: 10px;
+            }
+
+            .hero p {
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            /* Sections */
+
+            .section,
+            .about {
+                padding: 40px 20px;
+            }
+
+            .title {
+                font-size: 28px;
+                margin-bottom: 25px;
+            }
+
+            .about p {
+                width: 100%;
+                font-size: 15px;
+                line-height: 1.8;
+            }
+
+            /* Cards */
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            /* Gallery */
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery img {
+                width: 100%;
+                height: 220px;
+                object-fit: fill;
+            }
+
+            /* Footer */
+
+            .footer {
+                padding: 40px 20px;
+            }
+
+            .copyright {
+                padding: 15px;
+                font-size: 12px;
+            }
+        }
+
+
+        @media screen and (max-width:480px) {
+
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .title {
+                font-size: 22px;
+            }
+
+            .logo div {
+                font-size: 15px !important;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .gallery img {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo" style="display: flex; align-items: center; gap: 15px;">
+            <img height="50px" width="50px"
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-99hhqvsjdn.jpg">
+
+            <div style="font-family: sans-serif; font-size: 24px; font-weight: bold; color: #2B579A;">
+                Glory English Medium High School
+            </div>
+        </div>
+
+        <button class="login-btn" onclick="window.location.href='login.html'">
+            Login
+        </button>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+
+            <h1>Welcome To</h1>
+            <h1>Glory English Medium High School</h1>
+
+            <p>
+                Building knowledge, leadership, creativity and success for every student.
+            </p>
+
+            <button class="login-btn" onclick="window.location.href='login.html'">
+                Login to Portal
+            </button>
+
+        </div>
+    </section>
+
+    <section class="section">
+
+        <h2 class="title">
+            Why Choose Us?
+        </h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>📚 Quality Education</h3>
+                <p>
+                    Experienced teachers with modern learning methods.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>📝 Online Exams</h3>
+                <p>
+                    Quizzes and assessments for students.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>📅 Attendance Tracking</h3>
+                <p>
+                    Track attendance digitally.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>💰 Fee Management</h3>
+                <p>
+                    Simple fee tracking and management.
+                </p>
+            </div>
+
+
+
+        </div>
+
+    </section>
+    <br>
+
+
+    <section class="section">
+
+        <h2 class="title">
+            School Gallery
+        </h2>
+
+        <div class="gallery">
+
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-99hhqvsjdn.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-99u9fb24ou.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-m0s6bmex1p.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-qw77msictf.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-wgs1jdipfs.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-idzklanfcz.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-g5pgzqgvaw.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-6h9zafv82r.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-lnf8yt1qks.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-q2rol641n3.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-tutaouy9lq.jpg">
+            <img src="https://img.sanishtech.com/u/b9f0008509602777a2ae57d2f563faf6.jpg">
+
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-5v5h1se66v.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-7sk0bs03n5.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-uij62nwptm.jpg">
+            <img
+                src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-w3mcj7val0.jpg">
+        </div>
+
+    </section>
+    <br>
+
+    <section class="about">
+
+        <h2 class="title">
+            About Our School
+        </h2>
+
+        <p>
+            Glory English Medium School in Mangaldas Nagar, Guntur is a
+            prestigious educational institution established in 2018.
+            Our school focuses on providing excellent education while
+            fostering a nurturing environment for students'
+            holistic development.
+
+            With experienced faculty, modern teaching methods and
+            strong academic values, we ensure that every student
+            receives the support and guidance needed to excel
+            academically and personally.
+
+            ⭐ Rated 4.3 by parents and students for quality education.
+        </p>
+
+    </section>
+
+    <hr>
+
+    <section class="about">
+
+        <h2 class="title">
+            Curriculum & Medium of Instruction
+        </h2>
+
+        <p>
+            At Glory English Medium School in Mangaldas Nagar, Guntur,
+            we provide a well-rounded educational experience that promotes
+            academic excellence along with overall personality development.
+
+            Our curriculum includes a balanced combination of academic
+            subjects, arts, co-curricular activities, and physical
+            education to help students develop knowledge, creativity,
+            discipline, and essential life skills.
+
+            The medium of instruction at our school is <b>English</b>,
+            ensuring that students receive a modern and globally aligned
+            education. This approach helps students build strong
+            communication skills and prepares them for future academic,
+            professional, and personal success.
+        </p>
+
+    </section>
+    <hr>
+    <section class="about">
+
+        <h2 class="title">
+            Levels of Schooling
+        </h2>
+
+        <p>
+            Glory English Medium School in Mangaldas Nagar, Guntur
+            provides education across multiple levels, ensuring
+            students receive continuous learning and development
+            throughout their academic journey.
+
+            Our levels of schooling include:
+        </p>
+
+        <div class="cards" style="margin-top:40px;">
+
+            <div class="card">
+                <h3>🎒 Primary Education</h3>
+                <p>
+                    Building strong foundations in literacy,
+                    numeracy, and essential learning skills.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>📘 Middle School</h3>
+                <p>
+                    Enhancing academic understanding and
+                    developing critical thinking abilities.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>📚 Secondary Education</h3>
+                <p>
+                    Preparing students for higher studies with
+                    subject-focused learning and guidance.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+    <hr>
+    <section class="about">
+
+        <h2 class="title">
+            School Information
+        </h2>
+
+        <p>
+            Glory English Medium School follows an effective system of
+            governance and maintains a well-structured approach to both
+            academic and administrative activities.
+
+            Our institution is committed to creating a disciplined,
+            organized, and student-friendly learning environment that
+            supports quality education and overall development.
+
+            Through a balanced educational approach, we ensure that
+            students and parents receive the flexibility, support,
+            and guidance necessary to meet individual learning needs
+            and future aspirations.
+        </p>
+
+    </section>
+    <hr>
+    <section class="about">
+
+        <h2 class="title">
+            School Facilities
+        </h2>
+
+        <p style="margin-bottom:40px;">
+            Glory English Medium School provides modern facilities designed
+            to support academic excellence and overall student development.
+        </p>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>📚 Academic Library</h3>
+                <p>
+                    A well-equipped library with books and study materials.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>🌐 Internet Access</h3>
+                <p>
+                    Internet-enabled resources for digital learning and research.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>📖 Book Bank</h3>
+                <p>
+                    Access to textbooks and reference materials.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>🖥 DigiBoard</h3>
+                <p>
+                    Smart digital boards for interactive learning.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>📕 Reading Corner</h3>
+                <p>
+                    Comfortable spaces that encourage reading habits.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>⚽ Playground</h3>
+                <p>
+                    Recreational and sports facilities for students.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>🏥 Medical Support</h3>
+                <p>
+                    Health and medical support facilities for students.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <hr>
+    <section class="about">
+
+        <h2 class="title">
+            Overview
+        </h2>
+
+        <p>
+            Glory English Medium School in Mangaldas Nagar, Guntur is a
+            leading institution in the education sector, dedicated to
+            providing quality education and shaping young minds for a
+            successful future.
+
+            Our school offers a wide range of academic programs designed
+            to meet the diverse learning needs of students. With a team
+            of experienced educators and a student-centered approach,
+            we focus on academic excellence, personal growth, discipline,
+            and holistic development.
+
+            At Glory English Medium School, we strive to create a
+            supportive and inspiring environment where every student
+            receives the guidance and opportunities needed to achieve
+            their full potential.
+        </p>
+
+    </section>
+    <hr>
+    <section class="footer">
+
+        <h2>
+            Student Portal
+        </h2>
+
+        <p style="margin-bottom:20px">
+            Access attendance, marks, fees and quizzes
+        </p>
+
+        <button class="login-btn" onclick="window.location.href='login.html'">
+            Login Now
+        </button>
+
+    </section>
+
+    <hr>
+
+    <section class="about">
+
+        <h2 class="title">
+            Contact Us
+        </h2>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>📍 Address</h3>
+                <p>
+                    Glory English Medium School <br>
+                    Arundhathi Nagar 5th line & <br>
+                    Mangaldas Nagar, Guntur <br>
+                    Andhra Pradesh - 522001 <br>
+                    India
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>📞 Phone</h3>
+                <p>
+                    +91 9949410964 <br>
+                    +91 7013803083
+                </p>
+                <h3>📧 Email</h3>
+                <p>
+                    gloryenglishmediumhighschool@gmail.com
+                </p>
+                <a href="https://www.instagram.com/gloryenglishmediumhighschool?igsh=c3NtYXI2emx2dDc5" target="_blank"
+                    class="insta-link">
+                    <span>📷</span> Follow us on Instagram
+                </a>
+            </div>
+
+
+            <div class="card">
+                <h3>⏰ Working Hours</h3>
+                <p>
+                    Monday - Saturday <br>
+                    8:00 AM - 6:00 PM
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="copyright">
+        Copyright © 2026 Glory English Medium High School, Guntur, Andhra Pradesh-522001.<br>
+        Developed by <br><b> <a href="https://www.linkedin.com/in/bala-krishna-127b9330a/" target="_blank">Avvari
+                Balakrishna</a></b> , 2020-21 batch Glory English Medium High School.
+    </div>
+    <br>
+
+</body>
+
+</html>

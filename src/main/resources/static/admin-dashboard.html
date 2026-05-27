@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — School Management System</title>
+  <link rel="icon" type="image/png"
+    href="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-99hhqvsjdn.jpg">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #1a1a2e;
+      --ink2: #5c5c80;
+      --accent: #2563eb;
+      --gold: #f59e0b;
+      --bg: #f1f0ec;
+      --card: #fff;
+      --border: #e4e2da;
+      --green: #16a34a;
+      --red: #dc2626;
+      --orange: #ea580c;
+      --sidebar-w: 240px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ---- Sidebar ---- */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--ink);
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .sidebar-logo .school-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .sidebar-logo .role-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--gold);
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .nav {
+      flex: 1;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, .55);
+      font-size: 13px;
+      font-weight: 400;
+      transition: all .15s;
+      user-select: none;
+    }
+
+    .nav-item .icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, .07);
+      color: rgba(255, 255, 255, .9);
+    }
+
+    .nav-item.active {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .sidebar-footer {
+      padding: 16px 12px;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+    }
+
+    .user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .user-name {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .7);
+    }
+
+    .btn-logout {
+      margin-top: 8px;
+      width: 100%;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, .15);
+      background: transparent;
+      color: rgba(255, 255, 255, .55);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      transition: all .15s;
+    }
+
+    .btn-logout:hover {
+      background: rgba(255, 255, 255, .08);
+      color: rgba(255, 255, 255, .9);
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+    }
+
+    .topbar .filters {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .topbar select,
+    .topbar input {
+      padding: 7px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--ink);
+      background: var(--bg);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .topbar select:focus,
+    .topbar input:focus {
+      border-color: var(--accent);
+    }
+
+    .content {
+      padding: 28px 32px;
+      flex: 1;
+    }
+
+    /* ---- Sections (tabs) ---- */
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* ---- Stats row ---- */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+
+    .stat-card .label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink2);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .value {
+      font-size: 30px;
+      font-weight: 500;
+      color: var(--ink);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .stat-card .note {
+      font-size: 11px;
+      color: var(--ink2);
+      margin-top: 4px;
+    }
+
+    /* ---- Table ---- */
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .table-header h3 {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: var(--bg);
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--ink2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 12px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #fafaf8;
+    }
+
+    /* Marks expand row */
+    .marks-toggle {
+      cursor: pointer;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      user-select: none;
+    }
+
+    .marks-dropdown {
+      display: none;
+      padding: 12px 16px;
+      background: #f8f8ff;
+      border-top: 1px solid var(--border);
+    }
+
+    .marks-dropdown.open {
+      display: block;
+    }
+
+    .marks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 8px;
+    }
+
+    .marks-chip {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+
+    .marks-chip .subj {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--ink2);
+    }
+
+    .marks-chip .score {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--ink);
+      font-family: 'Playfair Display', serif;
+    }
+
+    .marks-chip .score.low {
+      color: var(--red);
+    }
+
+    .marks-chip .score.mid {
+      color: var(--orange);
+    }
+
+    .marks-chip .score.high {
+      color: var(--green);
+    }
+
+    /* Attendance badge */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .badge.present {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge.absent {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Fee status */
+    /* .badge.paid {
+      background: #dcfce7;
+      color: #15803d;
+    } */
+
+    /* .badge.partial {
+      background: #fef3c7;
+      color: #b45309;
+    } */
+
+    /* .badge.pending {
+      background: #fee2e2;
+      color: #b91c1c;
+    } */
+
+    /* Attendance summary bar */
+    .att-bar-wrap {
+      min-width: 100px;
+    }
+
+    .att-bar-bg {
+      height: 6px;
+      background: #fee2e2;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .att-bar-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 3px;
+      transition: width .5s ease;
+    }
+
+    .att-pct {
+      font-size: 11px;
+      color: var(--ink2);
+      margin-top: 3px;
+    }
+
+    .loading-row td {
+      text-align: center;
+      color: var(--ink2);
+      padding: 32px;
+    }
+
+    @media (max-width: 900px) {
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img height="50px" width="50px" style="border-radius: 25px;"
+        src="https://images.jdmagicbox.com/comp/guntur/d5/9999px863.x863.190313201955.m8d5/catalogue/glory-english-medium-school-mangaldas-nagar-guntur-schools-99hhqvsjdn.jpg">
+      <div class="school-name">Glory English Medium High School</div>
+      <span class="role-badge">Administrator</span>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-item active" data-section="marks" onclick="switchSection('marks', this)">
+        <span class="icon">📝</span> Marks Overview
+      </div>
+      <div class="nav-item" data-section="attendance" onclick="switchSection('attendance', this)">
+        <span class="icon">📅</span> Attendance
+      </div>
+      <div class="nav-item" data-section="credentials" onclick="switchSection('credentials', this);loadCredentials()">
+        <span class="icon">🔑</span> Student Credentials
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-row">
+        <div class="user-avatar" id="avatar-letter">A</div>
+        <div class="user-name" id="user-name-display">Loading...</div>
+      </div>
+      <button class="btn-logout" onclick="logout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <h1 id="section-title">Marks Overview</h1>
+      <div class="filters">
+        <select id="class-select" onchange="loadCurrentSection()">
+          <option value="">Select Class</option>
+        </select>
+        <input type="text" id="year-input" value="2024-2025" placeholder="Academic Year" style="width:120px" />
+        <button onclick="loadCurrentSection()"
+          style="padding:7px 16px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;">Refresh</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- MARKS SECTION -->
+      <div class="section active" id="section-marks">
+        <div class="stats-row" id="marks-stats">
+          <div class="stat-card">
+            <div class="label">Total Students</div>
+            <div class="value" id="st-total">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Class Average</div>
+            <div class="value" id="st-avg">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Highest Score</div>
+            <div class="value" id="st-high">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Below 40%</div>
+            <div class="value" id="st-fail">—</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-header">
+            <h3>Student-wise Marks</h3>
+            <span style="font-size:12px;color:var(--ink2)">Click ▼ to expand subject details</span>
+            <div style="display:flex;gap:10px;">
+              <select id="marks-exam-type" onchange="loadCurrentSection()"
+                style="padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;">
+                <option value="FA1">FA1</option>
+                <option value="FA2">FA2</option>
+                <option value="FA3">FA3</option>
+                <option value="SA1">SA1</option>
+                <option value="FA4">FA4</option>
+                <option value="SA2">SA2</option>
+              </select>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Roll No.</th>
+                <th>Student Name</th>
+                <th>Exam Type</th>
+                <th>Total Marks</th>
+                <th>Grade</th>
+                <th>Subject Detail</th>
+              </tr>
+            </thead>
+            <tbody id="marks-tbody">
+              <tr class="loading-row">
+                <td colspan="6">Select a class and click Refresh</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ATTENDANCE SECTION -->
+      <div class="section" id="section-attendance">
+        <div class="stats-row" id="att-stats">
+          <div class="stat-card">
+            <div class="label">Total Students</div>
+            <div class="value" id="att-total">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Present Today</div>
+            <div class="value" id="att-present">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Absent Today</div>
+            <div class="value" id="att-absent">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Attendance %</div>
+            <div class="value" id="att-pct-val">—</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-header">
+            <h3>Class Attendance</h3>
+            <input type="date" id="att-date"
+              style="padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;"
+              onchange="loadAttendance()" />
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Roll No.</th>
+                <th>Student Name</th>
+                <th>Today</th>
+                <th>Overall Attendance</th>
+              </tr>
+            </thead>
+            <tbody id="att-tbody">
+              <tr class="loading-row">
+                <td colspan="4">Select a class and date</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FEES SECTION -->
+      <!-- <div class="section" id="section-fees">
+        <div class="stats-row" id="fee-stats">
+          <div class="stat-card">
+            <div class="label">Total Due</div>
+            <div class="value" id="fee-due">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Collected</div>
+            <div class="value" id="fee-collected">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Pending</div>
+            <div class="value" id="fee-pending">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Collection %</div>
+            <div class="value" id="fee-pct">—</div>
+          </div>
+        </div> -->
+
+      <!-- <div class="table-wrap">
+          <div class="table-header">
+            <h3>Fee Status — Class wise</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Roll No.</th>
+                <th>Student Name</th>
+                <th>Term</th>
+                <th>Amount Due</th>
+                <th>Paid</th>
+                <th>Balance</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="fee-tbody">
+              <tr class="loading-row">
+                <td colspan="7">Select a class and click Refresh</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div> -->
+
+      <!-- STUDENT CREDENTIALS SECTION -->
+      <div class="section" id="section-credentials">
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="label">Total Credentials</div>
+            <div class="value" id="cred-total">—</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-header">
+            <h3>Student Login Credentials</h3>
+
+            <button onclick="loadCredentials()" style="
+                padding:8px 15px;
+                border:none;
+                border-radius:8px;
+                cursor:pointer;">
+              Refresh
+            </button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Roll Number</th>
+                <th>Password</th>
+              </tr>
+            </thead>
+
+            <tbody id="cred-tbody">
+              <tr>
+                <td colspan="3">
+                  No credentials loaded
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:8080/api';
+    let currentSection = 'marks';
+
+    function authHeaders() {
+      return { 'Authorization': 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'application/json' };
+    }
+
+    async function apiGet(url) {
+      const res = await fetch(API + url, { headers: authHeaders() });
+      if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
+      if (!res.ok) throw new Error('Request failed');
+      return res.json();
+    }
+
+    // ---- Init ----
+    (async function init() {
+      const name = localStorage.getItem('fullName') || 'Admin';
+      document.getElementById('user-name-display').textContent = name;
+      document.getElementById('avatar-letter').textContent = name.charAt(0).toUpperCase();
+
+      // Set today date
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('att-date').value = today;
+
+      // Load classes
+      try {
+        const classes = await apiGet('/classes');
+        const sel = document.getElementById('class-select');
+        classes.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = c.name;
+          sel.appendChild(opt);
+        });
+        if (classes.length) {
+          sel.value = classes[0].id;
+          loadCurrentSection();
+        }
+      } catch (e) { console.error(e); }
+    })();
+
+    function switchSection(name, el) {
+      currentSection = name;
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById('section-' + name).classList.add('active');
+      document.getElementById('section-title').textContent = el.textContent.trim();
+      loadCurrentSection();
+    }
+
+    function loadCurrentSection() {
+      if (currentSection === 'marks') loadMarks();
+      else if (currentSection === 'attendance') loadAttendance();
+      else if (currentSection === 'fees') loadFees();
+      else if (currentSection === 'credentials') { loadCredentials(); }
+    }
+
+    // Credentials
+    async function loadCredentials() {
+
+      const classId = document.getElementById('class-select').value;
+
+      if (!classId) return;
+
+      document.getElementById("cred-tbody").innerHTML =
+        '<tr class="loading-row"><td colspan="3">Loading...</td></tr>';
+
+      try {
+
+        const credentials =
+          await apiGet(`/admin/student-credentials/class/${classId}`);
+
+        document.getElementById("cred-total")
+          .textContent = credentials.length;
+
+        if (!credentials.length) {
+          document.getElementById("cred-tbody").innerHTML =
+            '<tr class="loading-row"><td colspan="3">No credentials found</td></tr>';
+          return;
+        }
+
+        let rows = "";
+
+        credentials.forEach(c => {
+
+          rows += `
+            <tr>
+                <td>${c.fullName}</td>
+                <td>${c.rollNumber}</td>
+                <td>${c.generatedPassword}</td>
+            </tr>
+            `;
+
+        });
+
+        document.getElementById("cred-tbody").innerHTML = rows;
+
+      }
+      catch (err) {
+
+        console.log(err);
+
+        document.getElementById("cred-tbody").innerHTML =
+          '<tr class="loading-row"><td colspan="2">Failed loading data</td></tr>';
+      }
+    }
+    function getMaxMarks(examType, isClass10) {
+      let subjects = isClass10 == 8 ? 8 : 7;
+
+      if (examType === 'FA1' || examType === 'FA2' || examType === 'FA3' || examType === 'FA4') {
+        return subjects * 50;
+      }
+
+      if ((examType === 'SA1' || examType === 'SA2') && isClass10 < 9) {
+        return subjects * 100;
+      }
+
+      if ((examType === 'SA1' || examType === 'SA2') && isClass10 >= 9) {
+        return subjects * 80;
+      }
+
+      return 0;
+    }
+    // ---- MARKS ----
+    async function loadMarks() {
+      const classId = document.getElementById('class-select').value;
+      const year = document.getElementById('year-input').value.trim();
+      if (!classId || !year) return;
+
+      document.getElementById('marks-tbody').innerHTML = '<tr class="loading-row"><td colspan="6">Loading...</td></tr>';
+      const examType = document.getElementById('marks-exam-type').value;
+      try {
+        let marks = await apiGet(`/admin/marks/class/${classId}?academicYear=${year}`);
+        // console.log(`/admin/marks/class/${classId}?academicYear=${year}`);
+        marks = marks.filter(m => m.examType === examType)
+        // console.log(marks)
+        // Stats
+        const totals = marks.map(m => parseFloat(m.totalMarks || 0));
+        const maxPossible = 600 +
+          (marks.some(m => m.abacus !== null) ? 100 : 0) +
+          (marks.some(m => m.iit !== null) ? 100 : 0) +
+          (marks.some(m => m.biology !== null) ? 100 : 0);
+        document.getElementById('st-total').textContent = new Set(marks.map(m => m.studentId)).size;
+        document.getElementById('st-avg').textContent = totals.length ? Math.round(totals.reduce((a, b) => a + b, 0) / totals.length) : '—';
+        document.getElementById('st-high').textContent = totals.length ? Math.max(...totals) : '—';
+        document.getElementById('st-fail').textContent = totals.filter(t => t < maxPossible * 0.4).length;
+
+        if (!marks.length) {
+          document.getElementById('marks-tbody').innerHTML = '<tr class="loading-row"><td colspan="6">No marks found for this class and year.</td></tr>';
+          return;
+        }
+
+        // Group by student
+        const byStudent = {};
+        marks.forEach(m => {
+          if (!byStudent[m.studentId]) byStudent[m.studentId] = { name: m.studentName, roll: m.rollNumber, exams: [] };
+          byStudent[m.studentId].exams.push(m);
+        });
+        // console.log(byStudent);
+        let html = '';
+        Object.entries(byStudent).forEach(([sid, data]) => {
+          data.exams.forEach(exam => {
+            // console.log(exam)
+            let ecid = exam.classId;
+
+            const maxP = getMaxMarks(exam.examType, ecid)
+            const pct = Math.round((parseFloat(exam.totalMarks) / maxP) * 100);
+            const grade = pct >= 90 ? 'A+' : pct >= 80 ? 'A' : pct >= 70 ? 'B' : pct >= 60 ? 'C' : pct >= 50 ? 'D' : 'F';
+            const gradeColor = pct >= 60 ? 'var(--green)' : pct >= 50 ? 'var(--orange)' : 'var(--red)';
+            const rowId = `marks-drop-${sid}-${exam.examType}`;
+            const maxSubMarks = getMaxMarksforExam(exam.examType, exam.classId);
+            // console.log(pct,grade,maxP,exam.totalMarks)
+            html += `
+          <tr>
+            <td><b>${data.roll}</b></td>
+            <td>${data.name}</td>
+            <td><span style="font-size:11px;padding:3px 8px;background:#eff6ff;color:var(--accent);border-radius:6px;">${exam.examType.replace('_', ' ')}</span></td>
+            <td style="font-weight:500;font-size:16px;">${exam.totalMarks} / ${maxP}</td>
+            <td style="font-weight:500;color:${gradeColor};">${grade} (${pct}%)</td>
+            <td>
+              <span class="marks-toggle" onclick="toggleMarks('${rowId}', this)">
+                ▼ View Subjects
+              </span>
+            </td>
+          </tr>
+          <tr id="${rowId}" style="display:none;">
+            <td colspan="6">
+              <div class="marks-grid">
+    
+                    ${subjectChip('Telugu', exam.telugu, maxSubMarks)}
+
+                    ${subjectChip(
+                  (exam.classId >= 3 && exam.classId <= 5) ? 'DBHPS' : 'Hindi',
+                  exam.hindi,
+                  maxSubMarks
+                )}
+
+                    ${subjectChip('English', exam.english, maxSubMarks)}
+
+                    ${subjectChip('Maths', exam.maths, maxSubMarks)}
+
+                    ${subjectChip(
+                  (exam.classId == 1 || exam.classId == 2)
+                    ? 'EVS'
+                    : (exam.classId >= 8 ? 'Physics' : 'Science'),
+                  exam.science,
+                  maxSubMarks
+                )}
+
+                    ${subjectChip(
+                  (exam.classId == 1 || exam.classId == 2)
+                    ? 'GK'
+                    : 'Social',
+                  exam.social,
+                  maxSubMarks
+                )}
+
+                    ${(exam.classId == 1 || exam.classId == 2) && exam.abacus !== null
+                    ? subjectChip('Abacus', exam.abacus, maxSubMarks)
+                    : ''}
+
+                    ${(exam.classId >= 3 && exam.classId <= 8) && exam.iit !== null
+                    ? subjectChip('IIT', exam.iit, maxSubMarks)
+                    : ''}
+
+                    ${(exam.classId >= 8) && exam.biology !== null
+                    ? subjectChip('Biology', exam.biology, maxSubMarks)
+                    : ''}
+
+              </div>
+            </td>
+          </tr>`;
+          });
+        });
+
+        document.getElementById('marks-tbody').innerHTML = html;
+      } catch (e) {
+        console.log(e);
+        document.getElementById('marks-tbody').innerHTML = '<tr class="loading-row"><td colspan="6">Error loading data.</td></tr>';
+      }
+    }
+    function getMaxMarksforExam(examType, grade) {
+      if (examType === 'FA1' || examType === 'FA2' || examType === 'FA3' || examType === 'FA4') {
+        return 50;
+      }
+      if (grade >= 9) {
+        if (examType === 'SA1' || examType === 'SA2') {
+          return 80;
+        }
+      }
+      if (grade < 9) {
+        if (examType === 'SA1' || examType === 'SA2') {
+          return 100;
+        }
+      }
+      return 0;
+    }
+    function subjectChip(name, score, maxSubMarks) {
+      const v = parseFloat(score)
+
+      const cls = v / maxSubMarks * 100 >= 75 ? 'high' : v >= 40 ? 'mid' : 'low';
+      return `<div class="marks-chip"><div class="subj">${name}</div><div class="score ${cls}">${v}</div></div>`;
+    }
+
+    function toggleMarks(rowId, el) {
+      const row = document.getElementById(rowId);
+      const open = row.style.display !== 'none';
+      row.style.display = open ? 'none' : 'table-row';
+      el.textContent = open ? '▼ View Subjects' : '▲ Hide Subjects';
+    }
+
+    // ---- ATTENDANCE ----
+    async function loadAttendance() {
+      const classId = document.getElementById('class-select').value;
+      const date = document.getElementById('att-date').value;
+      if (!classId || !date) return;
+
+      document.getElementById('att-tbody').innerHTML = '<tr class="loading-row"><td colspan="4">Loading...</td></tr>';
+
+      try {
+        const records = await apiGet(`/admin/attendance/class/${classId}?date=${date}`);
+
+        const present = records.filter(r => r.status === 'PRESENT').length;
+        const total = records.length;
+        document.getElementById('att-total').textContent = total;
+        document.getElementById('att-present').textContent = present;
+        document.getElementById('att-absent').textContent = total - present;
+        document.getElementById('att-pct-val').textContent = total ? Math.round(present / total * 100) + '%' : '—';
+
+        if (!records.length) {
+          document.getElementById('att-tbody').innerHTML = '<tr class="loading-row"><td colspan="4">No attendance records.</td></tr>';
+          return;
+        }
+
+        const rows = await Promise.all(records.map(async r => {
+          let sumHtml = '—';
+          try {
+            const s = await apiGet(`/admin/attendance/summary/${r.studentId}`);
+            const pct = s.percentage;
+            const color = pct >= 75 ? 'var(--green)' : pct >= 60 ? 'var(--orange)' : 'var(--red)';
+            sumHtml = `<div class="att-bar-wrap"><div class="att-bar-bg"><div class="att-bar-fill" style="width:${pct}%;background:${color}"></div></div><div class="att-pct">${s.present}/${s.total} days (${pct}%)</div></div>`;
+          } catch (e) { }
+          return `<tr>
+        <td><b>${r.rollNumber}</b></td>
+        <td>${r.fullName}</td>
+        <td><span class="badge ${r.status.toLowerCase()}">${r.status}</span></td>
+        <td>${sumHtml}</td>
+      </tr>`;
+        }));
+
+        document.getElementById('att-tbody').innerHTML = rows.join('');
+      } catch (e) {
+        document.getElementById('att-tbody').innerHTML = '<tr class="loading-row"><td colspan="4">Error loading attendance.</td></tr>';
+      }
+    }
+
+    // // ---- FEES ----
+    // async function loadFees() {
+    //   const classId = document.getElementById('class-select').value;
+    //   const year = document.getElementById('year-input').value.trim();
+    //   if (!classId || !year) return;
+
+    //   document.getElementById('fee-tbody').innerHTML = '<tr class="loading-row"><td colspan="7">Loading...</td></tr>';
+
+    //   try {
+    //     const fees = await apiGet(`/admin/fees/class/${classId}?academicYear=${year}`);
+
+    //     const totalDue = fees.reduce((s, f) => s + parseFloat(f.amountDue), 0);
+    //     const totalPaid = fees.reduce((s, f) => s + parseFloat(f.amountPaid), 0);
+    //     const pending = totalDue - totalPaid;
+    //     const pct = totalDue > 0 ? Math.round(totalPaid / totalDue * 100) : 0;
+
+    //     document.getElementById('fee-due').textContent = '₹' + totalDue.toLocaleString();
+    //     document.getElementById('fee-collected').textContent = '₹' + totalPaid.toLocaleString();
+    //     document.getElementById('fee-pending').textContent = '₹' + pending.toLocaleString();
+    //     document.getElementById('fee-pct').textContent = pct + '%';
+
+    //     if (!fees.length) {
+    //       document.getElementById('fee-tbody').innerHTML = '<tr class="loading-row"><td colspan="7">No fee records found.</td></tr>';
+    //       return;
+    //     }
+
+    //     document.getElementById('fee-tbody').innerHTML = fees.map(f => `
+    //   <tr>
+    //     <td><b>${f.rollNumber}</b></td>
+    //     <td>${f.studentName}</td>
+    //     <td>${f.term.replace('_', ' ')}</td>
+    //     <td>₹${parseFloat(f.amountDue).toLocaleString()}</td>
+    //     <td style="color:var(--green);font-weight:500;">₹${parseFloat(f.amountPaid).toLocaleString()}</td>
+    //     <td style="color:${parseFloat(f.balance) > 0 ? 'var(--red)' : 'var(--green)'};font-weight:500;">₹${parseFloat(f.balance).toLocaleString()}</td>
+    //     <td><span class="badge ${f.status.toLowerCase()}">${f.status}</span></td>
+    //   </tr>`).join('');
+    //   } catch (e) {
+    //     document.getElementById('fee-tbody').innerHTML = '<tr class="loading-row"><td colspan="7">Error loading fees.</td></tr>';
+    //   }
+    // }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+
+</html>
