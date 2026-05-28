@@ -288,30 +288,31 @@
 
     /* Buttons */
     .btn.loading {
-  opacity: 0.7;
-  cursor: not-allowed;
-  pointer-events: none;
-  position: relative;
-}
+      opacity: 0.7;
+      cursor: not-allowed;
+      pointer-events: none;
+      position: relative;
+    }
 
-.btn.loading::after {
-  content: "";
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(255,255,255,0.5);
-  border-top-color: #fff;
-  border-radius: 50%;
-  display: inline-block;
-  margin-left: 8px;
-  animation: btnSpin 0.7s linear infinite;
-  vertical-align: middle;
-}
+    .btn.loading::after {
+      content: "";
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-top-color: #fff;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 8px;
+      animation: btnSpin 0.7s linear infinite;
+      vertical-align: middle;
+    }
 
-@keyframes btnSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
+    @keyframes btnSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     .btn {
       padding: 7px 14px;
       border-radius: 8px;
@@ -690,6 +691,10 @@
       color: #991b1b;
       display: block;
     }
+
+    #year-input {
+      display: none;
+    }
   </style>
 </head>
 
@@ -727,7 +732,9 @@
         <select id="class-select" onchange="loadCurrentSection()">
           <option value="">Select Class</option>
         </select>
-        <input type="text" id="year-input" value="2024-2025" placeholder="Academic Year" style="width:120px" />
+        <input type="text" id="year-input" value="2026-2027" placeholder="Academic Year" style="width:120px" />
+        <button onclick="loadCurrentSection()"
+          style="padding:7px 16px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;">Refresh</button>
       </div>
     </div>
 
@@ -1040,19 +1047,19 @@
     let currentgrade = 0;
 
     function setButtonLoading(button, loading, loadingText = 'Saving...') {
-  if (!button) return;
+      if (!button) return;
 
-  if (loading) {
-    button.dataset.originalText = button.innerHTML;
-    button.innerHTML = loadingText;
-    button.classList.add('loading');
-    button.disabled = true;
-  } else {
-    button.innerHTML = button.dataset.originalText || 'Save';
-    button.classList.remove('loading');
-    button.disabled = false;
-  }
-}
+      if (loading) {
+        button.dataset.originalText = button.innerHTML;
+        button.innerHTML = loadingText;
+        button.classList.add('loading');
+        button.disabled = true;
+      } else {
+        button.innerHTML = button.dataset.originalText || 'Save';
+        button.classList.remove('loading');
+        button.disabled = false;
+      }
+    }
 
     function authHeaders() {
       return { 'Authorization': 'Bearer ' + localStorage.getItem('token'), 'Content-Type': 'application/json' };
@@ -1175,7 +1182,7 @@
     }
 
     async function saveStudent() {
-      const btn =  event.target;
+      const btn = event.target;
       setButtonLoading(btn, true, 'Saving Student details...');
       const id = document.getElementById('sm-id').value;
       const classId = document.getElementById('class-select').value;
@@ -1197,7 +1204,7 @@
         closeModal('student-modal');
         setButtonLoading(btn, false);
         loadStudents();
-      } catch (e) { errEl.textContent = 'Error saving student. Please try again.'; errEl.style.display = 'block'; setButtonLoading(btn, false);}
+      } catch (e) { errEl.textContent = 'Error saving student. Please try again.'; errEl.style.display = 'block'; setButtonLoading(btn, false); }
     }
 
     async function deleteStudent(id) {
@@ -1228,46 +1235,46 @@
         // console.log(grade);
         // Build thead
         const subjects =
-  (grade === 1 || grade === 2)
-    ? [
-        'Telugu',
-        'Hindi',
-        'English',
-        'Maths',
-        'EVS',
-        'GK',
-        'Abacus'
-      ]
-    : (grade >= 3 && grade <= 5)
-      ? [
-          'Telugu',
-          'DBHPS',
-          'English',
-          'Maths',
-          'EVS',
-          'GK',
-          ...(grade >= 3 && grade <= 8 ? ['IIT'] : [])
-        ]
-      : (grade >= 8)
-        ? [
-            'Telugu',
-            'Hindi',
-            'English',
-            'Maths',
-            'Physics', // changed label only
-            'Social',
-            'Biology',
-            ...(grade === 8 ? ['IIT'] : [])
-          ]
-        : [
-            'Telugu',
-            'Hindi',
-            'English',
-            'Maths',
-            'Science',
-            'Social',
-            ...(grade >= 3 && grade <= 8 ? ['IIT'] : [])
-          ];
+          (grade === 1 || grade === 2)
+            ? [
+              'Telugu',
+              'Hindi',
+              'English',
+              'Maths',
+              'EVS',
+              'GK',
+              'Abacus'
+            ]
+            : (grade >= 3 && grade <= 5)
+              ? [
+                'Telugu',
+                'DBHPS',
+                'English',
+                'Maths',
+                'EVS',
+                'GK',
+                ...(grade >= 3 && grade <= 8 ? ['IIT'] : [])
+              ]
+              : (grade >= 8)
+                ? [
+                  'Telugu',
+                  'Hindi',
+                  'English',
+                  'Maths',
+                  'Physics', // changed label only
+                  'Social',
+                  'Biology',
+                  ...(grade === 8 ? ['IIT'] : [])
+                ]
+                : [
+                  'Telugu',
+                  'Hindi',
+                  'English',
+                  'Maths',
+                  'Science',
+                  'Social',
+                  ...(grade >= 3 && grade <= 8 ? ['IIT'] : [])
+                ];
 
         document.getElementById('marks-thead').innerHTML = `<tr>
       <th>Roll No.</th><th>Name</th>
@@ -1277,7 +1284,7 @@
         document.getElementById('marks-tbody').innerHTML = studentsCache.map(s => {
           // console.log(s);
           const m = existingMap[s.id] || {};
-          const max = getMaxMarks(examType,grade);
+          const max = getMaxMarks(examType, grade);
           const examMax = getMaxMarksforExam(examType, grade);
           const total = m.totalMarks ? `${m.totalMarks} / ${max}` : '—';
           // console.log(max);
@@ -1310,10 +1317,10 @@
       const el = document.getElementById(`total-${studentId}`);
       if (el) el.textContent = t;
     }
-    function getMaxMarks(examType,gra) {
-      
-      let subjects = gra===8?8:7;
-      
+    function getMaxMarks(examType, gra) {
+
+      let subjects = gra === 8 ? 8 : 7;
+
       if (examType === 'FA1' || examType === 'FA2' || examType === 'FA3' || examType === 'FA4') {
         return subjects * 50;
       }
@@ -1366,7 +1373,7 @@
         'social',
         ...(grade === 1 || grade === 2 ? ['abacus'] : []),
         ...(grade >= 3 && grade <= 8 ? ['iit'] : []),
-        ...(grade >= 8 && grade<=10 ? ['biology'] : [])
+        ...(grade >= 8 && grade <= 10 ? ['biology'] : [])
       ];
 
       const promises = studentsCache.map(s => {
@@ -1377,7 +1384,7 @@
           academicYear: year
         };
 
-        let maxMarksForExam = getMaxMarksforExam(examType,grade);
+        let maxMarksForExam = getMaxMarksforExam(examType, grade);
         let totalMarks = 0;
 
         subs.forEach(sub => {
@@ -1695,7 +1702,7 @@
     }
 
     async function saveQuiz() {
-      const btn =  event.target;
+      const btn = event.target;
       setButtonLoading(btn, true, 'Saving Quiz...');
       const classId = document.getElementById('class-select').value;
       if (!classId) { alert('Please select a class first.'); return; }
@@ -1747,9 +1754,9 @@
         }
         setButtonLoading(btn, false);
         cancelQuizForm();
-        
+
         loadQuizzes_staff();
-      } catch (e) { alert('Error saving quiz: ' + e.message); setButtonLoading(btn, false);}
+      } catch (e) { alert('Error saving quiz: ' + e.message); setButtonLoading(btn, false); }
     }
 
     async function loadQuizzes_staff() {

@@ -454,6 +454,10 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
+
+    #year-input {
+      display: none;
+    }
   </style>
 </head>
 
@@ -497,7 +501,7 @@
         <select id="class-select" onchange="loadCurrentSection()">
           <option value="">Select Class</option>
         </select>
-        <input type="text" id="year-input" value="2024-2025" placeholder="Academic Year" style="width:120px" />
+        <input type="text" id="year-input" value="2026-2027" placeholder="Academic Year" style="width:120px" />
         <button onclick="loadCurrentSection()"
           style="padding:7px 16px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;">Refresh</button>
       </div>
@@ -896,42 +900,42 @@
                     ${subjectChip('Telugu', exam.telugu, maxSubMarks)}
 
                     ${subjectChip(
-                  (exam.classId >= 3 && exam.classId <= 5) ? 'DBHPS' : 'Hindi',
-                  exam.hindi,
-                  maxSubMarks
-                )}
+              (exam.classId >= 3 && exam.classId <= 5) ? 'DBHPS' : 'Hindi',
+              exam.hindi,
+              maxSubMarks
+            )}
 
                     ${subjectChip('English', exam.english, maxSubMarks)}
 
                     ${subjectChip('Maths', exam.maths, maxSubMarks)}
 
                     ${subjectChip(
-                  (exam.classId == 1 || exam.classId == 2)
-                    ? 'EVS'
-                    : (exam.classId >= 8 ? 'Physics' : 'Science'),
-                  exam.science,
-                  maxSubMarks
-                )}
+              (exam.classId == 1 || exam.classId == 2)
+                ? 'EVS'
+                : (exam.classId >= 8 ? 'Physics' : 'Science'),
+              exam.science,
+              maxSubMarks
+            )}
 
                     ${subjectChip(
-                  (exam.classId == 1 || exam.classId == 2)
-                    ? 'GK'
-                    : 'Social',
-                  exam.social,
-                  maxSubMarks
-                )}
+              (exam.classId == 1 || exam.classId == 2)
+                ? 'GK'
+                : 'Social',
+              exam.social,
+              maxSubMarks
+            )}
 
                     ${(exam.classId == 1 || exam.classId == 2) && exam.abacus !== null
-                    ? subjectChip('Abacus', exam.abacus, maxSubMarks)
-                    : ''}
+                ? subjectChip('Abacus', exam.abacus, maxSubMarks)
+                : ''}
 
                     ${(exam.classId >= 3 && exam.classId <= 8) && exam.iit !== null
-                    ? subjectChip('IIT', exam.iit, maxSubMarks)
-                    : ''}
+                ? subjectChip('IIT', exam.iit, maxSubMarks)
+                : ''}
 
                     ${(exam.classId >= 8) && exam.biology !== null
-                    ? subjectChip('Biology', exam.biology, maxSubMarks)
-                    : ''}
+                ? subjectChip('Biology', exam.biology, maxSubMarks)
+                : ''}
 
               </div>
             </td>

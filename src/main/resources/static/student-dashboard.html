@@ -1725,7 +1725,7 @@
       const el = document.getElementById('marks-content');
       el.innerHTML = '<p style="color:var(--ink2);">Loading...</p>';
       try {
-        const myMarks = await apiGet('/student/marks?academicYear=2024-2025');
+        const myMarks = await apiGet('/student/marks?academicYear=2026-2027');
         if (!myMarks || !myMarks.length) {
           el.innerHTML = '<p style="color:var(--ink2);padding:32px;">No marks recorded yet.</p>';
           return;
@@ -1778,8 +1778,8 @@
                   { name: 'DBHPS', val: m.hindi },   // hindi → DBHPS
                   { name: 'English', val: m.english },
                   { name: 'Maths', val: m.maths },
-                  { name: 'Science', val: m.science },
-                  { name: 'Social', val: m.social },
+                  { name: 'EVS', val: m.science },
+                  { name: 'GK', val: m.social },
                   { name: 'IIT', val: m.iit }
                 ]
 
