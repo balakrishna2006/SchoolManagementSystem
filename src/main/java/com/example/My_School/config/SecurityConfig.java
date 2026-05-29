@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/staff/**").hasAnyRole("STAFF", "ADMIN")
 
                 // Student only
-                .requestMatchers("/student/**").hasAuthority("STUDENT")
+                .requestMatchers("/student/**").hasRole("STUDENT")
                 // .requestMatchers("/", "/index.html").permitAll()
                 .anyRequest().authenticated()
             )
