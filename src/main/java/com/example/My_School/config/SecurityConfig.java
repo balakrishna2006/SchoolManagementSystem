@@ -36,28 +36,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                // Public
-                .requestMatchers("/", "/index", "/index.html", "/**.html").permitAll()
-                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                .requestMatchers("/auth/**", "/api/auth/**").permitAll()
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // Public
+                        .requestMatchers("/", "/index", "/index.html", "/**.html").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/auth/**", "/api/auth/**").permitAll()
 
-                // Admin only (read everything)
-                .requestMatchers("/admin/**").hasAnyRole("ADMIN", "STAFF","STUDENT")
+                        // Admin only (read everything)
+                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "STAFF", "STUDENT")
 
-                // Staff only
-                .requestMatchers("/staff/**").hasAnyRole("STAFF", "ADMIN")
+                        // Staff only
+                        .requestMatchers("/staff/**").hasAnyAuthority("STAFF", "ADMIN")
 
-                // Student only
-                .requestMatchers("/student/**").hasRole("STUDENT")
-                // .requestMatchers("/", "/index.html").permitAll()
-                .anyRequest().authenticated()
-            )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                        // Student only
+                        .requestMatchers("/student/**").hasAuthority("STUDENT")
+                        // .requestMatchers("/", "/index.html").permitAll()
+                        .anyRequest().authenticated())
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -92,5 +91,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    
 }
