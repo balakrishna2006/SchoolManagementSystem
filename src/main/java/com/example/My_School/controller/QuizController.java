@@ -84,10 +84,18 @@ public class QuizController {
 
     /** Start a quiz (returns questions, no correct answers) */
     @PostMapping("/student/quizzes/{quizId}/start")
-    public ResponseEntity<?> startQuiz(@PathVariable Long quizId,
+    public ResponseEntity<?> startQuiz(
+            @PathVariable Long quizId,
             @AuthenticationPrincipal UserDetails userDetails) {
-        Long studentId = ((User) userDetails).getStudentId();
-        return ResponseEntity.ok(quizService.startQuiz(quizId, studentId));
+
+        String username = userDetails.getUsername();
+
+        User u = authService.findByUsername(username);
+
+        Long studentId = u.getStudentId();
+
+        return ResponseEntity.ok(
+                quizService.startQuiz(quizId, studentId));
     }
 
     /** Submit quiz answers */
@@ -116,7 +124,7 @@ public class QuizController {
     public ResponseEntity<?> updateQuiz(
             @PathVariable Long id,
             @RequestBody QuizDto dto) {
-            System.out.println("hello");
+        System.out.println("hello");
         return ResponseEntity.ok(
                 quizService.updateQuiz(id, dto));
     }
