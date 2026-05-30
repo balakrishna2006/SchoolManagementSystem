@@ -317,9 +317,23 @@ public class QuizService {
                 if (existing.isPresent() &&
                                 existing.get().getStatus() != QuizAttempt.AttemptStatus.IN_PROGRESS) {
 
-                        throw new ResponseStatusException(
-                                        HttpStatus.BAD_REQUEST,
-                                        "You already submitted this quiz");
+                        QuizAttempt oldAttempt = existing.get();
+
+                        long elapsedMinutes = java.time.Duration.between(
+                                        oldAttempt.getStartedAt(),
+                                        now).toMinutes();
+
+                        if (elapsedMinutes >= quiz.getDurationMins()) {
+
+                                oldAttempt.setStatus(
+                                                QuizAttempt.AttemptStatus.TIMED_OUT);
+
+                                oldAttempt.setSubmittedAt(now);
+
+                                attemptRepo.save(oldAttempt);
+
+                                existing = Optional.empty();
+                        }
                 }
 
                 QuizAttempt attempt = existing.orElseGet(() -> {
@@ -367,6 +381,8 @@ public class QuizService {
                 response.put("durationMins", quiz.getDurationMins());
                 response.put("totalMarks", quiz.getTotalMarks());
                 response.put("startedAt", attempt.getStartedAt());
+                System.out.println("StartedAt = " + attempt.getStartedAt());
+                System.out.println("Now = " + now);
                 response.put("questions", questions);
 
                 return response;
