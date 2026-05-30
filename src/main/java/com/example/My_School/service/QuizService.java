@@ -258,7 +258,7 @@ public class QuizService {
         // -------------------------------------------------------
         @Transactional
         public Map<String, Object> startQuiz(Long quizId, Long studentId) {
-
+                System.out.println(" **********************START QUIZ CALLED: quizId=" + quizId + ", studentId=" + studentId);
                 Quiz quiz = quizRepo.findById(quizId)
                                 .orElseThrow(() -> new ResponseStatusException(
                                                 HttpStatus.NOT_FOUND,
@@ -381,8 +381,6 @@ public class QuizService {
                 response.put("durationMins", quiz.getDurationMins());
                 response.put("totalMarks", quiz.getTotalMarks());
                 response.put("startedAt", attempt.getStartedAt());
-                System.out.println("StartedAt = " + attempt.getStartedAt());
-                System.out.println("Now = " + now);
                 response.put("questions", questions);
 
                 return response;
