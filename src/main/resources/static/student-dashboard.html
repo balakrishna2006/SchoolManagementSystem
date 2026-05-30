@@ -1546,8 +1546,8 @@
         currentQIndex = 0;
         tabSwitchCount = 0;
 
-        const elapsed = Math.floor((Date.now() - activeQuiz.startedAt.getTime()) / 1000);
-        timeLeft = Math.max(0, data.durationMins * 60 - elapsed);
+        const elapsed =0;
+        timeLeft =data.durationMins * 60;
 
         renderQuizScreen();
         document.getElementById('quiz-screen').classList.add('open');
