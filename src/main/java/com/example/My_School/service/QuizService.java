@@ -265,7 +265,8 @@ public class QuizService {
                                                 HttpStatus.NOT_FOUND,
                                                 "Quiz not found"));
 
-                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime now = LocalDateTime.now(
+                                java.time.ZoneId.of("Asia/Kolkata"));
                 System.out.println("CHECKPOINT 1");
                 Optional<QuizAttempt> existing = attemptRepo.findByQuizIdAndStudentId(
                                 quizId,
@@ -280,7 +281,7 @@ public class QuizService {
                 // Quiz not yet published
                 if (quiz.getScheduledAt() != null &&
                                 now.isBefore(quiz.getScheduledAt())) {
-                         System.out.println("ERROR: Quiz not available yet");
+                        System.out.println("ERROR: Quiz not available yet");
                         throw new ResponseStatusException(
                                         HttpStatus.BAD_REQUEST,
                                         "Quiz is not available yet");
@@ -476,7 +477,7 @@ public class QuizService {
                 attempt.setCorrectAnswers(correct);
                 attempt.setTotalQuestions(questions.size());
                 attempt.setStatus(QuizAttempt.AttemptStatus.SUBMITTED);
-                attempt.setSubmittedAt(LocalDateTime.now());
+                attempt.setSubmittedAt(LocalDateTime.now(java.time.ZoneId.of("Asia/Kolkata")));
                 attemptRepo.save(attempt);
 
                 return buildResult(attempt, savedAnswers, quiz);
