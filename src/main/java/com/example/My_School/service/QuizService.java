@@ -280,7 +280,7 @@ public class QuizService {
                 // Quiz not yet published
                 if (quiz.getScheduledAt() != null &&
                                 now.isBefore(quiz.getScheduledAt())) {
-
+                         System.out.println("ERROR: Quiz not available yet");
                         throw new ResponseStatusException(
                                         HttpStatus.BAD_REQUEST,
                                         "Quiz is not available yet");
