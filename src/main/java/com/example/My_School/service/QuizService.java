@@ -258,17 +258,24 @@ public class QuizService {
         // -------------------------------------------------------
         @Transactional
         public Map<String, Object> startQuiz(Long quizId, Long studentId) {
-                System.out.println(" **********************START QUIZ CALLED: quizId=" + quizId + ", studentId=" + studentId);
+                System.out.println(" **********************START QUIZ CALLED: quizId=" + quizId + ", studentId="
+                                + studentId);
                 Quiz quiz = quizRepo.findById(quizId)
                                 .orElseThrow(() -> new ResponseStatusException(
                                                 HttpStatus.NOT_FOUND,
                                                 "Quiz not found"));
 
                 LocalDateTime now = LocalDateTime.now();
-
+                System.out.println("CHECKPOINT 1");
                 Optional<QuizAttempt> existing = attemptRepo.findByQuizIdAndStudentId(
                                 quizId,
                                 studentId);
+                System.out.println("CHECKPOINT 2");
+                if (existing.isPresent()) {
+                        System.out.println("ATTEMPT STATUS = " + existing.get().getStatus());
+                        System.out.println("ATTEMPT STARTED = " + existing.get().getStartedAt());
+                }
+                System.out.println("CHECKPOINT 3");
 
                 // Quiz not yet published
                 if (quiz.getScheduledAt() != null &&
@@ -316,6 +323,15 @@ public class QuizService {
                 // Already submitted
                 if (existing.isPresent() &&
                                 existing.get().getStatus() != QuizAttempt.AttemptStatus.IN_PROGRESS) {
+
+                        throw new ResponseStatusException(
+                                        HttpStatus.BAD_REQUEST,
+                                        "You already submitted this quiz");
+                }
+
+                // Existing in-progress attempt expired
+                if (existing.isPresent() &&
+                                existing.get().getStatus() == QuizAttempt.AttemptStatus.IN_PROGRESS) {
 
                         QuizAttempt oldAttempt = existing.get();
 
@@ -380,6 +396,10 @@ public class QuizService {
                 response.put("subject", quiz.getSubject().name());
                 response.put("durationMins", quiz.getDurationMins());
                 response.put("totalMarks", quiz.getTotalMarks());
+                System.out.println("ATTEMPT ID = " + attempt.getId());
+                System.out.println("STARTED AT = " + attempt.getStartedAt());
+                System.out.println("NOW = " + now);
+                System.out.println("DURATION = " + quiz.getDurationMins());
                 response.put("startedAt", attempt.getStartedAt());
                 response.put("questions", questions);
 

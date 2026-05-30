@@ -1531,7 +1531,9 @@
 
       try {
         const data = await apiPost(`/student/quizzes/${quizId}/start`, {});
-
+        console.log("Quiz Data:", data);
+        console.log("startedAt:", data.startedAt);
+        console.log("durationMins:", data.durationMins);
         activeQuiz = {
           quizId: data.quizId,
           attemptId: data.attemptId,
@@ -1759,7 +1761,7 @@
           const grade = pct >= 90 ? 'A+' : pct >= 80 ? 'A' : pct >= 70 ? 'B' : pct >= 60 ? 'C' : pct >= 50 ? 'D' : 'F';
           const gColor = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--orange)' : 'var(--red)';
           const classgrade = m.classId;
-          
+
           const subjects =
             (classgrade === 1 || classgrade === 2)
               ? [
