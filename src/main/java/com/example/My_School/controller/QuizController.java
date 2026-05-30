@@ -87,12 +87,8 @@ public class QuizController {
     public ResponseEntity<?> startQuiz(
             @PathVariable Long quizId,
             @AuthenticationPrincipal UserDetails userDetails) {
-        System.out.println("QUIZ START ENDPOINT HIT");
-        String username = userDetails.getUsername();
-
-        User u = authService.findByUsername(username);
-
-        Long studentId = u.getStudentId();
+        System.out.println("USERNAME = " + userDetails.getUsername());
+        Long studentId = ((User) userDetails).getStudentId();
 
         return ResponseEntity.ok(
                 quizService.startQuiz(quizId, studentId));
