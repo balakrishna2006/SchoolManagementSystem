@@ -107,9 +107,10 @@ public class StudentService {
         s.setAddress(dto.getAddress());
         s.setSchoolClass(cls);
         studentCredentialRepo.findByRollNumber(oldRollNumber)
-        .ifPresent(credential -> {
-            credential.setRollNumber(dto.getRollNumber());
-            studentCredentialRepo.save(credential);
+        .ifPresent(c -> {
+            c.setRollNumber(dto.getRollNumber());
+            c.setFullName(dto.getFullName()); // keep name synced
+            studentCredentialRepo.save(c);
         });
         return toDto(studentRepo.save(s));
     }
