@@ -94,9 +94,11 @@ public class StudentService {
     @Transactional
     public StudentDto update(Long id, StudentDto dto) {
         Student s = studentRepo.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        
         SchoolClass cls = classRepo.findById(dto.getClassId())
                 .orElseThrow(() -> new RuntimeException("Class not found"));
         s.setFullName(dto.getFullName());
+        String oldRollNumber = s.getRollNumber();
         s.setRollNumber(dto.getRollNumber());
         s.setDateOfBirth(dto.getDateOfBirth());
         s.setGender(dto.getGender() != null ? Student.Gender.valueOf(dto.getGender()) : null);
@@ -104,6 +106,11 @@ public class StudentService {
         s.setContactPhone(dto.getContactPhone());
         s.setAddress(dto.getAddress());
         s.setSchoolClass(cls);
+        studentCredentialRepo.findByRollNumber(oldRollNumber)
+        .ifPresent(credential -> {
+            credential.setRollNumber(dto.getRollNumber());
+            studentCredentialRepo.save(credential);
+        });
         return toDto(studentRepo.save(s));
     }
 
