@@ -35,6 +35,7 @@ public class StudentService {
     private final StudentCredentialRepository studentCredentialRepo;
     private final MarksRepository marksRepo;
     private final AttendanceRepository attendanceRepo;
+    
 
     public List<StudentDto> getByClass(Long classId) {
         return studentRepo.findBySchoolClassIdAndActiveTrue(classId)
@@ -93,11 +94,9 @@ public class StudentService {
     @Transactional
     public StudentDto update(Long id, StudentDto dto) {
         Student s = studentRepo.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
-
         SchoolClass cls = classRepo.findById(dto.getClassId())
                 .orElseThrow(() -> new RuntimeException("Class not found"));
         s.setFullName(dto.getFullName());
-        String oldRollNumber = s.getRollNumber();
         s.setRollNumber(dto.getRollNumber());
         s.setDateOfBirth(dto.getDateOfBirth());
         s.setGender(dto.getGender() != null ? Student.Gender.valueOf(dto.getGender()) : null);
@@ -105,21 +104,6 @@ public class StudentService {
         s.setContactPhone(dto.getContactPhone());
         s.setAddress(dto.getAddress());
         s.setSchoolClass(cls);
-        studentCredentialRepo.findByRollNumber(oldRollNumber)
-                .ifPresentOrElse(
-                        c -> {
-                            System.out.println("Credential found");
-                            c.setRollNumber(dto.getRollNumber());
-                            studentCredentialRepo.save(c);
-                        },
-                        () -> System.out.println("Credential NOT found"));
-
-        System.out.println("All credentials:");
-
-        studentCredentialRepo.findAll().forEach(c -> System.out.println(
-                "ID=" + c.getId() +
-                        ", Roll=" + c.getRollNumber() +
-                        ", Name=" + c.getFullName()));
         return toDto(studentRepo.save(s));
     }
 
@@ -134,6 +118,7 @@ public class StudentService {
             studentCredentialRepo.findByRollNumber(student.getRollNumber())
                     .ifPresent(studentCredentialRepo::delete);
 
+            
             marksRepo.deleteByStudentId(id);
             attendanceRepo.deleteByStudentId(id);
 
