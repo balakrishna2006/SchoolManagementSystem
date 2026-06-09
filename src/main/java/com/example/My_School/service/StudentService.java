@@ -13,6 +13,7 @@ import com.example.My_School.model.User;
 
 import lombok.RequiredArgsConstructor;
 
+import org.apache.el.stream.Optional;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,6 +95,7 @@ public class StudentService {
     @Transactional
     public StudentDto update(Long id, StudentDto dto) {
         Student s = studentRepo.findById(id).orElseThrow(() -> new RuntimeException("Student not found"));
+        String oldRollNumber = s.getRollNumber();
         SchoolClass cls = classRepo.findById(dto.getClassId())
                 .orElseThrow(() -> new RuntimeException("Class not found"));
         s.setFullName(dto.getFullName());
@@ -104,7 +106,17 @@ public class StudentService {
         s.setContactPhone(dto.getContactPhone());
         s.setAddress(dto.getAddress());
         s.setSchoolClass(cls);
-        return toDto(studentRepo.save(s));
+        Student updatedStudent = studentRepo.save(s);
+
+        credentialRepo.findByRollNumber(oldRollNumber)
+            .ifPresent(c -> {
+                c.setRollNumber(dto.getRollNumber());
+                c.setFullName(dto.getFullName());
+                c.setSchoolClass(cls);
+                credentialRepo.save(c);
+            });
+
+        return toDto(updatedStudent);
     }
 
     @Transactional
