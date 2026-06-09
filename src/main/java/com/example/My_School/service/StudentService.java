@@ -107,11 +107,14 @@ public class StudentService {
         s.setAddress(dto.getAddress());
         s.setSchoolClass(cls);
         studentCredentialRepo.findByRollNumber(oldRollNumber)
-        .ifPresent(c -> {
-            c.setRollNumber(dto.getRollNumber());
-            c.setFullName(dto.getFullName()); // keep name synced
-            studentCredentialRepo.save(c);
-        });
+        .ifPresentOrElse(
+            c -> {
+                System.out.println("Credential found");
+                c.setRollNumber(dto.getRollNumber());
+                studentCredentialRepo.save(c);
+            },
+            () -> System.out.println("Credential NOT found")
+        );
         return toDto(studentRepo.save(s));
     }
 
